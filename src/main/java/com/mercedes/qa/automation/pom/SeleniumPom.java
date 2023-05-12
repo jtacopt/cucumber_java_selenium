@@ -8,6 +8,7 @@ import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
 
@@ -99,6 +100,9 @@ public class SeleniumPom {
         return result;
     }
 
+    protected List<WebElement> findElementList(final By by) {
+        return driver.findElements(by);
+    }
 
     /**
      * Finds a list of elements within a search context using the specified locators.
@@ -107,7 +111,7 @@ public class SeleniumPom {
      * @param target The locator to use for finding the elements within the search context.
      * @return A list of WebElements that match the specified locators.
      */
-    private List<WebElement> findElementList(final By main, final By target) {
+    protected List<WebElement> findElementList(final By main, final By target) {
         var context = getSearchContext(main);
         return findElementList(context, target);
     }
@@ -147,6 +151,12 @@ public class SeleniumPom {
             }
         }
         throw new NotFoundException("Couldn't find element with text " + text);
+    }
+
+    protected void selectByVisibleText(final By by, final String text) {
+        var element = findElement(by);
+        Select select = new Select(element);
+        select.selectByVisibleText(text);
     }
 
     /**
@@ -193,6 +203,11 @@ public class SeleniumPom {
         element.click();
     }
 
+    protected void inputText(final By by, final String text) {
+        var element = findElement(by);
+        element.sendKeys(text);
+    }
+
     /**
      * Retrieves the text of the element matching the specified criteria.
      *
@@ -224,7 +239,7 @@ public class SeleniumPom {
      *
      * @return WebDriver instance.
      */
-    private WebDriver getDriver() {
+    protected WebDriver getDriver() {
         return this.driver;
     }
 
