@@ -1,4 +1,4 @@
-#Selenium Test Automation with Maven and JUnit 5
+# Selenium Test Automation with Maven and JUnit 5
 
 This project is a test automation framework built with Selenium WebDriver, Maven, and JUnit 5. It aims to provide a scalable and maintainable solution for automated testing of web applications.
 
