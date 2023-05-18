@@ -1,8 +1,15 @@
 package com.mercedes.qa.automation.pom;
 
+import com.mercedes.qa.automation.model.Car;
+import com.mercedes.qa.automation.model.FuelType;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
+import java.math.BigDecimal;
+import java.util.Currency;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DCPCar extends SeleniumPom {
 
@@ -23,23 +30,53 @@ public class DCPCar extends SeleniumPom {
         this.carElement = carElement;
     }
 
-    public String getModel() {
+    private String getModel() {
         return readText(carElement, MODEL_NAME);
     }
 
-    public String getPrice() {
+    private String getFullPrice() {
         return readText(carElement, PRICE);
     }
 
-    public String getMileage() {
-        return readText(carElement, MILEAGE);
+    private BigDecimal getPrice() {
+        BigDecimal price = null;
+        Pattern pricePattern = Pattern.compile("[\\d,.]+");
+        Matcher matcher = pricePattern.matcher(getFullPrice());
+        if (matcher.find()) {
+            String priceValue = matcher.group();
+            price = new BigDecimal(priceValue.replace(",", ""));
+        }
+        return price;
     }
 
-    public String getYear() {
-        return readText(carElement, YEAR);
+    private int getMileage() {
+        var mileage = 0;
+        var distanceString = readText(carElement, MILEAGE);
+        Pattern numberPattern = Pattern.compile("\\d+");
+        Matcher matcher = numberPattern.matcher(distanceString);
+        if (matcher.find()) {
+            String numberString = matcher.group();
+            mileage = Integer.parseInt(numberString);
+        }
+        return mileage;
     }
 
-    public String getFuel() {
+    private int getYear() {
+        return Integer.parseInt(readText(carElement, YEAR));
+    }
+
+    private String getFuel() {
         return readText(carElement, FUEL_TYPE);
+    }
+
+    public Car getCar() {
+        return new Car.Builder()
+                .model(getModel())
+                .price(getPrice())
+                .currency(Currency.getInstance("CAD"))
+                .mileage(new BigDecimal(getMileage()))
+                .year(getYear())
+                .fuelType(FuelType.valueOf(getFuel().toUpperCase()))
+                .build();
     }
 }

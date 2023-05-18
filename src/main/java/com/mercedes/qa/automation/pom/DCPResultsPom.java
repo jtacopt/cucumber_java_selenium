@@ -18,7 +18,7 @@ public class DCPResultsPom extends SeleniumPom {
         super(driver);
     }
 
-    public void sort(String sortingMethod) {
+    public void sort(final String sortingMethod) {
         selectByVisibleText(SORTING, sortingMethod);
         getWait().getWait().until(ExpectedConditions.not(ExpectedConditions.visibilityOf(getDriver().findElement(LOADER))));
     }

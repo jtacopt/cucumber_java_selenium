@@ -1,3 +1,4 @@
+import com.mercedes.qa.automation.model.Car;
 import com.mercedes.qa.automation.pom.CookieBannerPom;
 import com.mercedes.qa.automation.pom.DCPCar;
 import com.mercedes.qa.automation.pom.DCPResultsPom;
@@ -10,6 +11,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.Duration;
 
 class Task2Test {
@@ -48,12 +52,22 @@ class Task2Test {
         DCPResultsPom results = new DCPResultsPom(driver);
 
         results.sort(" Price (descending) ");
-        var vehicle = results.getCars().get(0);
-        var model = vehicle.getModel();
-        var currentPrice = vehicle.getPrice();
-        var mileage = vehicle.getMileage();
-        var year = vehicle.getYear();
-        var fuelType = vehicle.getFuel();
+        var carList = results.getCars().stream().map(DCPCar::getCar).toList();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("target/results.txt"))) {
+            for (Car car : carList) {
+                String line = car.getModel() + "," +
+                        car.getPrice() + "," +
+                        car.getCurrency().getCurrencyCode() + "," +
+                        car.getMileage() + "," +
+                        car.getYear() + "," +
+                        car.getFuelType();
+                writer.write(line);
+                writer.newLine();
+            }
+            System.out.println("Dados escritos com sucesso no arquivo.");
+        } catch (IOException e) {
+            System.out.println("Ocorreu um erro ao escrever no arquivo: " + e.getMessage());
+        }
 
         //details
 //        var mileage = driver.findElement(By.cssSelector("[data-test-id=dcp-buy-box-vehicle-characteristics-mileage]"));
