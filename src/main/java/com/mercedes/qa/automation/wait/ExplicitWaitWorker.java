@@ -22,7 +22,7 @@ public class ExplicitWaitWorker {
      * @param driver the WebDriver instance used to perform the explicit wait.
      */
     public ExplicitWaitWorker(final WebDriver driver) {
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
     /**
      * Waits for the element located by the given By object to be present on the page.

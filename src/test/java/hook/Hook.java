@@ -16,9 +16,7 @@ public class Hook {
 
     @Before
     public void setUp() {
-        var driver = testContext.getWebDriverManager().getDriver();
-        driver.navigate().to("https://shop.mercedes-benz.com/en-au/shop/vehicle/srp/demo?sort=relevance-demo&assortment=vehicle&_ga=2.187480619.203641262.1657586487-633169010.1646263583&tgroup=realTarget");
-
+        testContext.getWebDriverManager();
     }
 
     @After
