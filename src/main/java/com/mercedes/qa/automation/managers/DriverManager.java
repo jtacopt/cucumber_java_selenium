@@ -2,11 +2,17 @@ package com.mercedes.qa.automation.gui.manager;
 
 import com.mercedes.qa.automation.configs.SeleniumConfig;
 import com.mercedes.qa.automation.configs.TestConfig;
+import com.mercedes.qa.automation.enums.EnvironmentType;
 import com.mercedes.qa.automation.enums.SeleniumBrowser;
 import org.junit.jupiter.api.TestInfo;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.remote.Browser;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.IOException;
@@ -23,10 +29,6 @@ import java.util.Optional;
 public class DriverManager {
 
     /**
-     * Information about the test being executed.
-     */
-    private final TestInfo testInfo;
-    /**
      * Configuration information for the Selenium browser.
      */
     private final SeleniumConfig seleniumConfig;
@@ -38,11 +40,9 @@ public class DriverManager {
     /**
      *
      * Constructs a new DriverManager with the given TestInfo.
-     * @param testInfo the TestInfo object representing the current test.
      * @throws IOException if an I/O error occurs while reading the Selenium configuration file.
      */
-    public DriverManager(final TestInfo testInfo) throws IOException {
-        this.testInfo = testInfo;
+    public DriverManager() throws IOException {
         this.seleniumConfig = new SeleniumConfig();
         initDriver();
     }
@@ -53,11 +53,25 @@ public class DriverManager {
      *  @throws IOException if an I/O error occurs while reading the test configuration file.
      */
     private void initDriver() throws IOException {
-        setDriver(new RemoteWebDriver(new URL(getSystemProperty("grid.url")), buildCapabilities()));
+        var environmentType = seleniumConfig.getEnvironmentType();
+        if (EnvironmentType.LOCAL.equals(environmentType)) {
+            setDriver(initLocalDriver());
+        } else {
+            setDriver(new RemoteWebDriver(new URL(getSystemProperty("grid.url")), buildCapabilities()));
+        }
         getDriver().manage().window().maximize();
         getDriver().manage().timeouts().pageLoadTimeout(seleniumConfig.getDriverTimeout());
         var testConfig = new TestConfig();
         getDriver().navigate().to(new URL(testConfig.getUrl()));
+    }
+
+    private WebDriver initLocalDriver() {
+        var browser = seleniumConfig.getBrowser();
+        return switch (browser) {
+            case EDGE -> new EdgeDriver(new EdgeOptions());
+            case CHROME -> new ChromeDriver(new ChromeOptions());
+            case FIREFOX -> null;
+        };
     }
 
     /**
@@ -80,7 +94,7 @@ public class DriverManager {
      */
     private Map<String, Object> getSauceLabsOptions() {
         Map<String, Object> sauceOptions = new HashMap<>();
-        sauceOptions.put("name", testInfo.getDisplayName());
+
         sauceOptions.put("screenResolution", "1920x1080");
         return sauceOptions;
     }

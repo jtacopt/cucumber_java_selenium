@@ -25,8 +25,7 @@ class Task2Test {
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.navigate().to("https://shop.mercedes-benz.com/en-au/shop/vehicle/srp/demo?sort=relevance-demo&assortment=vehicle&_ga=2.187480619.203641262.1657586487-633169010.1646263583&tgroup=realTarget");
-        var cookie = new CookieBannerPom(driver);
-        cookie.acceptAll();
+
     }
 
     @Test

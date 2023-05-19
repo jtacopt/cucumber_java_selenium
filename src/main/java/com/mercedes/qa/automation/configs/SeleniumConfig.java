@@ -1,5 +1,6 @@
 package com.mercedes.qa.automation.configs;
 
+import com.mercedes.qa.automation.enums.EnvironmentType;
 import com.mercedes.qa.automation.enums.SeleniumBrowser;
 
 import java.io.IOException;
@@ -35,6 +36,11 @@ public class SeleniumConfig {
         }
     }
 
+    public EnvironmentType getEnvironmentType() {
+        return EnvironmentType.parse(getProperty("selenium.env.type", this.seleniumProperties));
+    }
+
+
     /**
      * Retrieves the platform value from the Selenium configuration.
      *
@@ -54,6 +60,10 @@ public class SeleniumConfig {
         return SeleniumBrowser.parse(getProperty("selenium.browser", this.seleniumProperties));
     }
 
+    public boolean isBrowserHeadless() {
+        return Boolean.parseBoolean(getProperty("selenium.browser.headless", this.seleniumProperties));
+    }
+
     /**
      * Retrieves the driver timeout value from the Selenium configuration
      * and returns it as a Duration object.
@@ -61,7 +71,7 @@ public class SeleniumConfig {
      * @return a Duration object representing the configured driver timeout.
      */
     public Duration getDriverTimeout() {
-        return Duration.ofSeconds(Long.parseLong(getProperty("selenium.implicit.wait", this.seleniumProperties)));
+        return Duration.parse(getProperty("selenium.implicit.wait", this.seleniumProperties));
     }
 
     /**
