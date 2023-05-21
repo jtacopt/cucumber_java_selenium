@@ -8,10 +8,10 @@ import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * This class represents a Page Object Model (POM) for performing UI actions using Selenium WebDriver.
@@ -95,6 +95,7 @@ public class SeleniumPom {
         if (getExecutor().isShadowRoot(context) && !SeleniumBrowser.isSearchContextAvailable(browser)) {
             result = getExecutor().findElement((WebElement) context, target);
         } else {
+            getWait().getWait().until((Function<SearchContext, Boolean>) searchContext -> !context.findElements(target).isEmpty());
             result = context.findElement(target);
         }
         getWait().waitToBeVisible(result);

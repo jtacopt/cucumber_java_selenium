@@ -4,7 +4,7 @@ import com.mercedes.qa.automation.configs.SeleniumConfig;
 import com.mercedes.qa.automation.configs.TestConfig;
 import com.mercedes.qa.automation.enums.EnvironmentType;
 import com.mercedes.qa.automation.enums.SeleniumBrowser;
-import org.junit.jupiter.api.TestInfo;
+import lombok.SneakyThrows;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
@@ -12,11 +12,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
-import org.openqa.selenium.remote.Browser;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 import java.security.InvalidParameterException;
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -52,17 +51,19 @@ public class DriverManager {
      *  navigating to the test URL, and maximizing the window.
      *  @throws IOException if an I/O error occurs while reading the test configuration file.
      */
+    @SneakyThrows
     private void initDriver() throws IOException {
         var environmentType = seleniumConfig.getEnvironmentType();
         if (EnvironmentType.LOCAL.equals(environmentType)) {
             setDriver(initLocalDriver());
         } else {
-            setDriver(new RemoteWebDriver(new URL(getSystemProperty("grid.url")), buildCapabilities()));
+            setDriver(new RemoteWebDriver(new URI(getSystemProperty("grid.url")).toURL(), buildCapabilities()));
         }
         getDriver().manage().window().maximize();
         getDriver().manage().timeouts().pageLoadTimeout(seleniumConfig.getDriverTimeout());
+        getDriver().manage().timeouts().scriptTimeout(seleniumConfig.getDriverTimeout());
         var testConfig = new TestConfig();
-        getDriver().navigate().to(new URL(testConfig.getUrl()));
+        getDriver().get(testConfig.getUrl());
     }
 
     private WebDriver initLocalDriver() {
