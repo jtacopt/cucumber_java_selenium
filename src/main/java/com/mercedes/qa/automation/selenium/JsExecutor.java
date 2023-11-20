@@ -96,6 +96,10 @@ public class JsExecutor {
         return (List<WebElement>) getJavascriptExecutor().executeScript(script, element);
     }
 
+    public String readText(final WebElement element) {
+        var script = "return arguments[0].textContent";
+        return (String) getJavascriptExecutor().executeScript(script, element);
+    }
     /**
      * Get JsExecutor.
      * @return JavascriptExecutor

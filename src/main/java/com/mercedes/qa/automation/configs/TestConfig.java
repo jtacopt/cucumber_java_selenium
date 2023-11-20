@@ -31,7 +31,7 @@ public class TestConfig {
      * @return the value of the 'url' property as a string.
      */
     public String getUrl() {
-        return getProperty("url", this.testProperties);
+        return getProperty("base-url", this.testProperties);
     }
 
     /**
