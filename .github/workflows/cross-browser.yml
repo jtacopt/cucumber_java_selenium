@@ -10,7 +10,8 @@ jobs:
       fail-fast: false
       matrix:
         browser:
-          - name
+          - chrome
+          - firefox
 
     steps:
       - uses: actions/checkout@v3
