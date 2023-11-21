@@ -2,8 +2,8 @@ name: Test
 
 on: [ push ]
 jobs:
-  linux-tests:
-    name: Test Linux
+  tests:
+    name: Tests
     runs-on: ubuntu-latest
 
     strategy:
