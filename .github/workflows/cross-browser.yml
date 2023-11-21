@@ -3,13 +3,14 @@ name: Test
 on: [ push ]
 jobs:
   linux-tests:
-    name: Test
+    name: Test Linux
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
-        browser: [ 'chrome','firefox' ]
+        browser:
+          - name
 
     steps:
       - uses: actions/checkout@v3
@@ -28,7 +29,7 @@ jobs:
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
 
   win-tests:
-    name: Test
+    name: Test Windows
     runs-on: ubuntu-latest
 
     strategy:
@@ -53,7 +54,7 @@ jobs:
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
 
   mac-tests:
-    name: Test
+    name: Test MAC
     runs-on: ubuntu-latest
 
     strategy:
