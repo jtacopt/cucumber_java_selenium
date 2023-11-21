@@ -3,3 +3,6 @@ start-standalone-grid:
 
 start-extend-grid:
 	java -jar selenium-server-<version>.jar standalone --config config.toml
+
+test:
+	mvn test
