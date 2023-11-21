@@ -78,17 +78,17 @@ public class DriverManager {
         var browser = seleniumConfig.getBrowser();
         if (browser.equals(SeleniumBrowser.CHROME)) {
             return SauceOptions.chrome()
-                    .setPlatformName(SaucePlatform.LINUX)
+                    .setPlatformName(SaucePlatform.MAC_VENTURA)
                     .build();
         }
         if (browser.equals(SeleniumBrowser.EDGE)){
             return SauceOptions.edge()
-                    .setPlatformName(SaucePlatform.WINDOWS_11)
+                    .setPlatformName(SaucePlatform.MAC_VENTURA)
                     .build();
         }
         if (browser.equals(SeleniumBrowser.FIREFOX)){
             return SauceOptions.firefox((FirefoxOptions) browser.getCapabilities())
-                    .setPlatformName(SaucePlatform.LINUX)
+                    .setPlatformName(SaucePlatform.MAC_VENTURA)
                     .build();
         }
         if (browser.equals(SeleniumBrowser.SAFARI)){
