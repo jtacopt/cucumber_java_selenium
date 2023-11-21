@@ -27,7 +27,7 @@ public class SeleniumConfig {
      * configuration properties from the 'selenium.properties' file.
      *
      * @throws IOException if an error occurs while reading the
-     * properties file.
+     *                     properties file.
      */
     public SeleniumConfig() throws IOException {
         seleniumProperties = new Properties();
@@ -85,8 +85,15 @@ public class SeleniumConfig {
      * @return the value of the specified property.
      */
     private String getProperty(final String propertyKey, final Properties alternative) {
-        return System.getProperty(propertyKey) == null
-                ? alternative.getProperty(propertyKey)
-                : System.getProperty(propertyKey);
+        var result = "";
+        var env = System.getenv(propertyKey);
+        if (env != null) {
+            return env;
+        }
+        var prop = System.getProperty(propertyKey);
+        if (result.isBlank() && prop != null) {
+            return prop;
+        }
+        return alternative.getProperty(propertyKey);
     }
 }
