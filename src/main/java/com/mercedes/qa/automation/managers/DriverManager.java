@@ -82,8 +82,8 @@ public class DriverManager {
         SeleniumBrowser browser = seleniumConfig.getBrowser();
         var browserCapabilities = browser.getCapabilities();
         MutableCapabilities sauceCapabilities = new MutableCapabilities();
-        sauceCapabilities.setCapability("sauce:options", getSauceLabsOptions());
-        sauceCapabilities.setCapability("platformName", seleniumConfig.getPlatform());
+       // sauceCapabilities.setCapability("sauce:options", getSauceLabsOptions());
+       // sauceCapabilities.setCapability("platformName", seleniumConfig.getPlatform());
         return browserCapabilities.merge(sauceCapabilities);
     }
 
