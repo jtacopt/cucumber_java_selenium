@@ -14,7 +14,9 @@ jobs:
     services:
       selenium:
         image: selenium/standalone-${{ matrix.browser }}
-        options: --shm-size=2 -p 4445:4444
+        ports:
+          - 4444:4444
+        options: --shm-size=2
 
     steps:
       - uses: actions/checkout@v3
