@@ -53,6 +53,7 @@ public enum SeleniumBrowser {
             case "gc", "chrome", "googlechrome" -> CHROME;
             case "edge", "msedge" -> EDGE;
             case "firefox" -> FIREFOX;
+            case "safari" -> SAFARI;
             default -> throw new IllegalStateException("Unknown driver type: " + name);
         };
     }
