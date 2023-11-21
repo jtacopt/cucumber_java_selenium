@@ -12,12 +12,17 @@ jobs:
         browser:
           - chrome
           - firefox
-          - ${{ matrix.platform == 'win' || matrix.platform == 'mac' ? 'edge' : '' }}
-          - ${{ matrix.platform == 'mac' ? 'safari' : '' }}
         platform:
           - win
           - mac
           - linux
+        include:
+          - browser: safari
+            platform: mac
+          - browser: edge
+            platform: win
+          - browser: edge
+            platform: mac
 
     steps:
       - uses: actions/checkout@v3
