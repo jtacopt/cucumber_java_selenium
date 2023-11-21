@@ -6,6 +6,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.safari.SafariOptions;
 
 /**
  * This enum defines the available browsers that can be used for Selenium tests. It also provides utility methods for
@@ -23,11 +24,14 @@ public enum SeleniumBrowser {
     /**
      * The Firefox browser.
      */
-    FIREFOX(new FirefoxOptions());
+    FIREFOX(new FirefoxOptions()),
+    SAFARI(new SafariOptions());
+
     /**
      * The Selenium capabilities for the browser.
      */
     private final Capabilities capabilities;
+
     /**
      * Constructs a new instance of the SeleniumBrowser enum with the specified capabilities.
      *

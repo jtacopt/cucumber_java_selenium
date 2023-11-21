@@ -18,6 +18,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.safari.SafariOptions;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
@@ -84,6 +85,9 @@ public class DriverManager {
         if (browser.equals(SeleniumBrowser.FIREFOX)){
             return SauceOptions.firefox((FirefoxOptions) browser.getCapabilities()).build();
         }
+        if (browser.equals(SeleniumBrowser.SAFARI)){
+            return SauceOptions.safari((SafariOptions) browser.getCapabilities()).build();
+        }
         throw new NotFoundException();
     }
 
@@ -93,6 +97,7 @@ public class DriverManager {
             case EDGE -> new EdgeDriver(new EdgeOptions());
             case CHROME -> new ChromeDriver(new ChromeOptions());
             case FIREFOX -> null;
+            case SAFARI -> null;
         };
     }
 
