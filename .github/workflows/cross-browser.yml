@@ -12,11 +12,16 @@ jobs:
         browser: [ 'chrome','firefox','edge' ]
 
     services:
-      selenium:
-        image: selenium/standalone-${{ matrix.browser }}
+      selenium-hub:
+        image: selenium/hub-${{ matrix.browser }}
         ports:
           - 4444:4444
         options: --shm-size=2
+      selenium-node:
+        image: selenium/node-${{ matrix.browser }}
+        ports:
+          - 4444:4444
+        options: --shm-size=2 -e SE_EVENT_BUS_HOST=selenium-hub
 
     steps:
       - uses: actions/checkout@v3
