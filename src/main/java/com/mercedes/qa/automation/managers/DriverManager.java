@@ -5,6 +5,7 @@ import com.mercedes.qa.automation.configs.TestConfig;
 import com.mercedes.qa.automation.enums.EnvironmentType;
 import com.mercedes.qa.automation.enums.SeleniumBrowser;
 import com.saucelabs.saucebindings.DataCenter;
+import com.saucelabs.saucebindings.SaucePlatform;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import com.saucelabs.saucebindings.SauceSession;
 import lombok.SneakyThrows;
@@ -39,7 +40,7 @@ public class DriverManager {
      */
     private WebDriver driver;
     protected SauceSession session;
-    protected DataCenter dataCenter = DataCenter.US_WEST;
+    protected DataCenter dataCenter = DataCenter.EU_CENTRAL;
 
     /**
      * Constructs a new DriverManager with the given TestInfo.
@@ -78,7 +79,7 @@ public class DriverManager {
             return SauceOptions.chrome().build();
         }
         if (browser.equals(SeleniumBrowser.EDGE)){
-            return SauceOptions.edge().build();
+            return SauceOptions.edge().setPlatformName(SaucePlatform.WINDOWS_11).build();
         }
         if (browser.equals(SeleniumBrowser.FIREFOX)){
             return SauceOptions.firefox((FirefoxOptions) browser.getCapabilities()).build();
