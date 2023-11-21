@@ -1,5 +1,6 @@
 package com.mercedes.qa.automation.enums;
 
+import lombok.Getter;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -12,6 +13,7 @@ import org.openqa.selenium.safari.SafariOptions;
  * This enum defines the available browsers that can be used for Selenium tests. It also provides utility methods for
  * parsing browser names and checking if a browser supports a specific feature.
  */
+@Getter
 public enum SeleniumBrowser {
     /**
      * The Chrome browser.
@@ -29,6 +31,11 @@ public enum SeleniumBrowser {
 
     /**
      * The Selenium capabilities for the browser.
+     * -- GETTER --
+     *  Returns the Selenium capabilities for the browser.
+     *
+     * @return the Selenium capabilities for the browser.
+
      */
     private final Capabilities capabilities;
 
@@ -80,12 +87,4 @@ public enum SeleniumBrowser {
         return CHROME.equals(browser) || EDGE.equals(browser);
     }
 
-    /**
-     * Returns the Selenium capabilities for the browser.
-     *
-     * @return the Selenium capabilities for the browser.
-     */
-    public Capabilities getCapabilities() {
-        return capabilities;
-    }
 }

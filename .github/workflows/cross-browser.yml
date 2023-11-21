@@ -2,14 +2,14 @@ name: Test
 
 on: [ push ]
 jobs:
-  test:
+  linux-tests:
     name: Test
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
-        browser: [ 'chrome','firefox','edge','safari' ]
+        browser: [ 'chrome','firefox' ]
 
     steps:
       - uses: actions/checkout@v3
@@ -22,6 +22,7 @@ jobs:
 
       - run: make test
         env:
+          PLATFORM: LINUX
           BROWSER: ${{ matrix.browser }}
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
