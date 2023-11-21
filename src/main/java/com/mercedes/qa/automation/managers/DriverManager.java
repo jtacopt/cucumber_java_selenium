@@ -56,7 +56,7 @@ public class DriverManager {
         if (EnvironmentType.LOCAL.equals(environmentType)) {
             setDriver(initLocalDriver());
         } else {
-            setDriver(new RemoteWebDriver(new URI(getSystemProperty("grid.url")).toURL(), buildCapabilities()));
+            setDriver(new RemoteWebDriver(new URI("http://localhost:4444/wd/hub").toURL(), buildCapabilities()));
         }
         getDriver().manage().window().maximize();
         getDriver().manage().timeouts().pageLoadTimeout(seleniumConfig.getDriverTimeout());
