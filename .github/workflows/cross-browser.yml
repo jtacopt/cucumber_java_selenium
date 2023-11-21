@@ -9,9 +9,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        platform:
+          - win
+          - mac
+          - linux
         browser:
           - chrome
           - firefox
+          - ${{ matrix.platform == 'win' || matrix.platform == 'mac' ? 'edge' : '' }}
+          - ${{ matrix.platform == 'mac' ? 'safari' : '' }}
 
     steps:
       - uses: actions/checkout@v3
