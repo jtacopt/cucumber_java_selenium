@@ -13,7 +13,7 @@ jobs:
 
     services:
       selenium-hub:
-        image: selenium/hub-${{ matrix.browser }}
+        image: selenium/hub
         ports:
           - 4444:4444
         options: --shm-size=2
