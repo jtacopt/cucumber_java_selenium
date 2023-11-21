@@ -1,21 +1,24 @@
-package com.mercedes.qa.automation.gui.manager;
+package com.mercedes.qa.automation.managers;
 
 import com.mercedes.qa.automation.configs.SeleniumConfig;
 import com.mercedes.qa.automation.configs.TestConfig;
 import com.mercedes.qa.automation.enums.EnvironmentType;
 import com.mercedes.qa.automation.enums.SeleniumBrowser;
+import com.saucelabs.saucebindings.DataCenter;
+import com.saucelabs.saucebindings.options.SauceOptions;
+import com.saucelabs.saucebindings.SauceSession;
 import lombok.SneakyThrows;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
+import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
 import java.io.IOException;
-import java.net.URI;
 import java.security.InvalidParameterException;
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -35,10 +38,12 @@ public class DriverManager {
      * The WebDriver instance used for testing.
      */
     private WebDriver driver;
+    protected SauceSession session;
+    protected DataCenter dataCenter = DataCenter.US_WEST;
 
     /**
-     *
      * Constructs a new DriverManager with the given TestInfo.
+     *
      * @throws IOException if an I/O error occurs while reading the Selenium configuration file.
      */
     public DriverManager() throws IOException {
@@ -47,8 +52,8 @@ public class DriverManager {
     }
 
     /**
-     *  Initializes the WebDriver instance by creating a new RemoteWebDriver with the appropriate capabilities,
-     *  navigating to the test URL, and maximizing the window.
+     * Initializes the WebDriver instance by creating a new RemoteWebDriver with the appropriate capabilities,
+     * navigating to the test URL, and maximizing the window.
      */
     @SneakyThrows
     private void initDriver() {
@@ -56,13 +61,29 @@ public class DriverManager {
         if (EnvironmentType.LOCAL.equals(environmentType)) {
             setDriver(initLocalDriver());
         } else {
-            setDriver(new RemoteWebDriver(new URI("http://localhost:4444/wd/hub").toURL(), buildCapabilities()));
+            session = new SauceSession(getSauceOptions());
+            session.setDataCenter(dataCenter);
+            setDriver(session.start());
         }
         getDriver().manage().window().maximize();
         getDriver().manage().timeouts().pageLoadTimeout(seleniumConfig.getDriverTimeout());
         getDriver().manage().timeouts().scriptTimeout(seleniumConfig.getDriverTimeout());
         var testConfig = new TestConfig();
         getDriver().get(testConfig.getUrl());
+    }
+
+    public SauceOptions getSauceOptions() {
+        var browser = seleniumConfig.getBrowser();
+        if (browser.equals(SeleniumBrowser.CHROME)) {
+            return SauceOptions.chrome().build();
+        }
+        if (browser.equals(SeleniumBrowser.EDGE)){
+            return SauceOptions.edge().build();
+        }
+        if (browser.equals(SeleniumBrowser.FIREFOX)){
+            return SauceOptions.firefox((FirefoxOptions) browser.getCapabilities()).build();
+        }
+        throw new NotFoundException();
     }
 
     private WebDriver initLocalDriver() {
@@ -76,20 +97,21 @@ public class DriverManager {
 
     /**
      * Builds the Capabilities object for the WebDriver based on the SeleniumBrowser and Sauce Labs options.
+     *
      * @return the Capabilities object for the WebDriver.
      */
     private Capabilities buildCapabilities() {
         SeleniumBrowser browser = seleniumConfig.getBrowser();
         var browserCapabilities = browser.getCapabilities();
         MutableCapabilities sauceCapabilities = new MutableCapabilities();
-       // sauceCapabilities.setCapability("sauce:options", getSauceLabsOptions());
-       // sauceCapabilities.setCapability("platformName", seleniumConfig.getPlatform());
+        // sauceCapabilities.setCapability("sauce:options", getSauceLabsOptions());
+        // sauceCapabilities.setCapability("platformName", seleniumConfig.getPlatform());
         return browserCapabilities.merge(sauceCapabilities);
     }
 
     /**
-     *
      * Returns a Map of options for Sauce Labs.
+     *
      * @return the Map of options for Sauce Labs.
      */
     private Map<String, Object> getSauceLabsOptions() {
@@ -100,8 +122,8 @@ public class DriverManager {
     }
 
     /**
-     *
      * Gets the value of the specified system property or environment variable.
+     *
      * @param key the name of the system property or environment variable to retrieve.
      * @return the value of the specified system property or environment variable.
      * @throws InvalidParameterException if the specified system property or environment variable is not set.
@@ -113,7 +135,6 @@ public class DriverManager {
     }
 
     /**
-     *
      * Closes the WebDriver instance.
      */
     public void close() {
@@ -121,8 +142,8 @@ public class DriverManager {
     }
 
     /**
-     *
      * Gets the WebDriver instance used for testing.
+     *
      * @return the WebDriver instance used for testing.
      */
     public WebDriver getDriver() {
@@ -130,8 +151,8 @@ public class DriverManager {
     }
 
     /**
-     *
      * Sets the WebDriver instance used for testing.
+     *
      * @param driver the WebDriver instance used for testing.
      */
     private void setDriver(final WebDriver driver) {

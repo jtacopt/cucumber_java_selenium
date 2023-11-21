@@ -1,3 +1,4 @@
+import com.mercedes.qa.automation.managers.DriverManager;
 import com.mercedes.qa.automation.model.Car;
 import com.mercedes.qa.automation.pom.DCPCar;
 import com.mercedes.qa.automation.pom.DCPResultsPom;
@@ -18,7 +19,7 @@ class Task2Test {
 
     @BeforeEach
     public void setUp() throws IOException {
-        var driverManager = new com.mercedes.qa.automation.gui.manager.DriverManager();
+        var driverManager = new DriverManager();
         driver = driverManager.getDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
     }

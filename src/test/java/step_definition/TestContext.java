@@ -1,9 +1,9 @@
 package step_definition;
 
-import java.io.IOException;
-import com.mercedes.qa.automation.gui.manager.DriverManager;
+import com.mercedes.qa.automation.managers.DriverManager;
 import lombok.Getter;
-import org.junit.jupiter.api.TestInfo;
+
+import java.io.IOException;
 
 @Getter
 public class TestContext {
