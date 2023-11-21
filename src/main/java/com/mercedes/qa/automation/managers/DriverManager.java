@@ -4,10 +4,12 @@ import com.mercedes.qa.automation.configs.SeleniumConfig;
 import com.mercedes.qa.automation.configs.TestConfig;
 import com.mercedes.qa.automation.enums.EnvironmentType;
 import com.mercedes.qa.automation.enums.SeleniumBrowser;
+import com.mercedes.qa.automation.enums.SeleniumPlatform;
 import com.saucelabs.saucebindings.DataCenter;
 import com.saucelabs.saucebindings.SaucePlatform;
-import com.saucelabs.saucebindings.options.SauceOptions;
 import com.saucelabs.saucebindings.SauceSession;
+import com.saucelabs.saucebindings.options.SauceOptions;
+import lombok.Getter;
 import lombok.SneakyThrows;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
@@ -40,7 +42,8 @@ public class DriverManager {
      * The WebDriver instance used for testing.
      */
     private WebDriver driver;
-    protected SauceSession session;
+    @Getter
+    private SauceSession session;
     protected DataCenter dataCenter = DataCenter.EU_CENTRAL;
 
     /**
@@ -76,25 +79,37 @@ public class DriverManager {
 
     public SauceOptions getSauceOptions() {
         var browser = seleniumConfig.getBrowser();
+        var platform = seleniumConfig.getPlatform();
+        SaucePlatform saucePlatform = getSaucePlatform(platform);
         if (browser.equals(SeleniumBrowser.CHROME)) {
             return SauceOptions.chrome()
-                    .setPlatformName(SaucePlatform.MAC_VENTURA)
+                    .setPlatformName(saucePlatform)
                     .build();
         }
-        if (browser.equals(SeleniumBrowser.EDGE)){
+        if (browser.equals(SeleniumBrowser.EDGE)) {
             return SauceOptions.edge()
-                    .setPlatformName(SaucePlatform.MAC_VENTURA)
+                    .setPlatformName(saucePlatform)
                     .build();
         }
-        if (browser.equals(SeleniumBrowser.FIREFOX)){
+        if (browser.equals(SeleniumBrowser.FIREFOX)) {
             return SauceOptions.firefox((FirefoxOptions) browser.getCapabilities())
-                    .setPlatformName(SaucePlatform.MAC_VENTURA)
+                    .setPlatformName(saucePlatform)
                     .build();
         }
-        if (browser.equals(SeleniumBrowser.SAFARI)){
-            return SauceOptions.safari((SafariOptions) browser.getCapabilities()).build();
+        if (browser.equals(SeleniumBrowser.SAFARI)) {
+            return SauceOptions.safari((SafariOptions) browser.getCapabilities())
+                    .setPlatformName(saucePlatform)
+                    .build();
         }
         throw new NotFoundException();
+    }
+
+    private SaucePlatform getSaucePlatform(final SeleniumPlatform platform) {
+        return switch (platform) {
+            case MAC -> SaucePlatform.MAC_VENTURA;
+            case LINUX -> SaucePlatform.LINUX;
+            case WINDOWS -> SaucePlatform.WINDOWS_10;
+        };
     }
 
     private WebDriver initLocalDriver() {

@@ -1,10 +1,11 @@
 package hook;
 
+import com.saucelabs.saucebindings.SauceSession;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import step_definition.TestContext;
-
-import java.io.IOException;
 
 public class Hook {
 
@@ -16,11 +17,16 @@ public class Hook {
 
     @Before
     public void setUp() {
-        //testContext.getWebDriverManager();
     }
 
     @After
-    public void tearDown() {
-        testContext.getWebDriverManager().getDriver().quit();
+    public void tearDown(Scenario scenario) {
+        var driverManager = testContext.getWebDriverManager();
+        SauceSession session = driverManager.getSession();
+        if (session != null) {
+            session.stop(!scenario.isFailed());
+        } else {
+            driverManager.getDriver().quit();
+        }
     }
 }
