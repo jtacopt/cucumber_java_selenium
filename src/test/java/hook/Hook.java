@@ -16,7 +16,7 @@ public class Hook {
 
     @Before
     public void setUp() {
-        testContext.getWebDriverManager();
+        //testContext.getWebDriverManager();
     }
 
     @After

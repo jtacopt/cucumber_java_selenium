@@ -1,0 +1,30 @@
+name: Test
+
+on: [ push ]
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [ 'chrome','firefox','edge' ]
+
+    services:
+      selenium:
+        image: selenium/standalone-${{ matrix.browser }}
+        options: --shm-size=2
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+
+      - run: make test
+        env:
+          BROWSER: ${{ matrix.browser }}

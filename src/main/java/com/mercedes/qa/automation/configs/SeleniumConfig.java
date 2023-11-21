@@ -57,7 +57,7 @@ public class SeleniumConfig {
      * @return a SeleniumBrowser object representing the configured browser.
      */
     public SeleniumBrowser getBrowser() {
-        return SeleniumBrowser.parse(getProperty("selenium.browser", this.seleniumProperties));
+        return SeleniumBrowser.parse(getProperty("BROWSER", this.seleniumProperties));
     }
 
     public boolean isBrowserHeadless() {

@@ -1,15 +1,11 @@
 import com.mercedes.qa.automation.model.Car;
-import com.mercedes.qa.automation.pom.CookieBannerPom;
 import com.mercedes.qa.automation.pom.DCPCar;
 import com.mercedes.qa.automation.pom.DCPResultsPom;
 import com.mercedes.qa.automation.pom.LocationPom;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.Select;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -21,11 +17,10 @@ class Task2Test {
     WebDriver driver;
 
     @BeforeEach
-    public void setUp() {
-        driver = new ChromeDriver();
+    public void setUp() throws IOException {
+        var driverManager = new com.mercedes.qa.automation.gui.manager.DriverManager();
+        driver = driverManager.getDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.navigate().to("https://shop.mercedes-benz.com/en-au/shop/vehicle/srp/demo?sort=relevance-demo&assortment=vehicle&_ga=2.187480619.203641262.1657586487-633169010.1646263583&tgroup=realTarget");
-
     }
 
     @Test

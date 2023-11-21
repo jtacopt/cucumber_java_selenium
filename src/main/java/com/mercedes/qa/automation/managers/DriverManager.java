@@ -49,10 +49,9 @@ public class DriverManager {
     /**
      *  Initializes the WebDriver instance by creating a new RemoteWebDriver with the appropriate capabilities,
      *  navigating to the test URL, and maximizing the window.
-     *  @throws IOException if an I/O error occurs while reading the test configuration file.
      */
     @SneakyThrows
-    private void initDriver() throws IOException {
+    private void initDriver() {
         var environmentType = seleniumConfig.getEnvironmentType();
         if (EnvironmentType.LOCAL.equals(environmentType)) {
             setDriver(initLocalDriver());
