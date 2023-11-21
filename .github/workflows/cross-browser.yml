@@ -15,9 +15,9 @@ jobs:
       selenium-hub:
         image: selenium/hub
         ports:
-          - "4442:4442"
-          - "4443:4443"
-          - "4444:4444"
+          - 4442:4442
+          - 4443:4443
+          - 4444:4444
         options: >-
           --shm-size=2
 
