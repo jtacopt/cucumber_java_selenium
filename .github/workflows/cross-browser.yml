@@ -33,9 +33,18 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
 
-      - run: make test
+      - name: Run Tests
+        run: make test allure.results.directory:=target/${{ matrix.platform }}/${{ matrix.browser }}/allure-results
         env:
           PLATFORM: ${{ matrix.platform }}
           BROWSER: ${{ matrix.browser }}
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+
+      - name: Upload results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: ${{ matrix.platform }}/${{ matrix.browser }}/allure-results
+          path: target/${{ matrix.platform }}/${{ matrix.browser }}/allure-results
+          retention-days: 1

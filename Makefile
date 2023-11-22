@@ -4,5 +4,6 @@ start-standalone-grid:
 start-extend-grid:
 	java -jar selenium-server-<version>.jar standalone --config config.toml
 
+allure.results.directory:=target/allure-results
 test:
-	mvn test
+	mvn test -Dallure.results.directory=$(allure.results.directory)
