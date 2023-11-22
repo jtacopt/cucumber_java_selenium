@@ -7,8 +7,8 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = "Feature"
-        , glue = {"step_definition", "hook"}
+        features = "Feature",
+        glue = {"step_definition", "hook"}
 )
 public class TriggerTest {
 }

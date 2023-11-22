@@ -14,6 +14,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <io.cucumber.version>7.12.0</io.cucumber.version>
+        <io.qameta.allure.version>2.24.0</io.qameta.allure.version>
+        <com.saucelabs.saucebindings-junit5.version>1.4.0</com.saucelabs.saucebindings-junit5.version>
         <org.seleniumhq.selenium.version>4.15.0</org.seleniumhq.selenium.version>
         <org.junit.platform.version>1.9.3</org.junit.platform.version>
         <org.junit.jupiter.version>5.9.3</org.junit.jupiter.version>
@@ -55,7 +57,7 @@
         <dependency>
             <groupId>com.saucelabs</groupId>
             <artifactId>saucebindings-junit5</artifactId>
-            <version>1.4.0</version>
+            <version>${com.saucelabs.saucebindings-junit5.version}</version>
         </dependency>
 
         <dependency>
@@ -89,6 +91,18 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${org.junit.jupiter.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-junit5</artifactId>
+            <version>${io.qameta.allure.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-cucumber7-jvm</artifactId>
+            <version>${io.qameta.allure.version}</version>
         </dependency>
 
         <dependency>
