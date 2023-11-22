@@ -34,7 +34,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Run Tests
-        run: make test allure.results.directory:=target/${{ matrix.platform }}/${{ matrix.browser }}/allure-results
+        run: make test
         env:
           PLATFORM: ${{ matrix.platform }}
           BROWSER: ${{ matrix.browser }}
@@ -45,6 +45,6 @@ jobs:
         uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: ${{ matrix.platform }}/${{ matrix.browser }}/allure-results
-          path: target/${{ matrix.platform }}/${{ matrix.browser }}/allure-results
+          name: ${{ matrix.platform }}_${{ matrix.browser }}_allure-results
+          path: target(allure-results
           retention-days: 1
