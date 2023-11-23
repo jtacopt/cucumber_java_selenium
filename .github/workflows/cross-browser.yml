@@ -84,7 +84,7 @@ jobs:
           git config --local user.name "GitHub Actions"
           git add ${{ matrix.platform }}/${{ matrix.browser }}
           git commit -m "Commit message"
-          git push gh_pages
+          git push origin gh_pages
 
 # Funciona para uma pagina
 #    steps:
