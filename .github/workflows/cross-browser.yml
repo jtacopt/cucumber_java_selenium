@@ -6,7 +6,7 @@ jobs:
     name: Tests
 
     permissions:
-      contents: read
+      contents: write
       pages: write
       id-token: write
 
@@ -84,7 +84,7 @@ jobs:
           git config --local user.name "GitHub Actions"
           git add ${{ matrix.platform }}/${{ matrix.browser }}
           git commit -m "Commit message"
-          git push
+          git push gh_pages
 
 # Funciona para uma pagina
 #    steps:
