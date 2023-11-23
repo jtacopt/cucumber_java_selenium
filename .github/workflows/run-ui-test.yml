@@ -44,7 +44,12 @@ jobs:
   
       - name: Generate Report
         run: make report
-  
+
+      - name: Generate Executors
+        run: |
+          echo '[{"name":"GitHub","type":"github","buildName":"${{ github.action }}#${{ github.run_number }}","buildUrl":"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}]' > executors.json
+          mv executors.json target/site/allure-maven-plugin/widgets
+
       - name: Upload Report
         uses: actions/upload-artifact@v2
         if: always()
