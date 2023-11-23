@@ -65,6 +65,36 @@ jobs:
           name: ${{ matrix.platform }}_${{ matrix.browser }}_allure-report
           path: target/site/allure-maven-plugin
 
+  report:
+    name: Report
+    needs:
+      - test
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        browser:
+          - chrome
+          - firefox
+        platform:
+          - win
+          - mac
+          - linux
+        include:
+          - browser: safari
+            platform: mac
+          - browser: edge
+            platform: win
+          - browser: edge
+            platform: mac
+
+    steps:
       - name: Get Page Artifact
         uses: actions/download-artifact@v3
         with:
@@ -91,7 +121,7 @@ jobs:
             # Se houver conflitos ou mudanças, atualiza novamente a nova branch com a gh_pages
             git pull origin gh_pages
           fi
-      
+          
           # Tentativa de fazer push na gh_pages
           retries=10
           while [ $retries -gt 0 ]; do
@@ -103,8 +133,6 @@ jobs:
               break
             fi
           done
-      
+          
           # Apaga a nova branch
           git push --delete origin "$branch_name"
-
-
