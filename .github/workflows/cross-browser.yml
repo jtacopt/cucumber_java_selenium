@@ -62,11 +62,12 @@ jobs:
         uses: actions/upload-pages-artifact@v2
         if: always()
         with:
+          description: ${{ matrix.platform }}_${{ matrix.browser }}_allure-report
           path: target/site/allure-maven-plugin
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v3
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
+#      - name: Deploy to GitHub Pages
+#        id: deployment
+#        uses: actions/deploy-pages@v2
