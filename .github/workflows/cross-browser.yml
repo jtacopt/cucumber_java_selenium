@@ -66,7 +66,7 @@ jobs:
           path: target/site/allure-maven-plugin
 
       - name: Clean Dir
-        run: rm -rf ./
+        run: sudo rm -rf ./
 
       - name: Get Page Artifact
         uses: actions/download-artifact@v3
