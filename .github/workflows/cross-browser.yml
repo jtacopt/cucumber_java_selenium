@@ -5,6 +5,11 @@ jobs:
   tests:
     name: Run Tests
 
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
     strategy:
       fail-fast: false
       matrix:
