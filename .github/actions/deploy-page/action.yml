@@ -16,7 +16,7 @@ inputs:
     required: true
   token:
     description: 'Git Token'
-    required: true
+    default: ${{ github.token }}
 
 runs:
   using: composite
