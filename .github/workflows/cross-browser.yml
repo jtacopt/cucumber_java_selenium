@@ -67,6 +67,4 @@ jobs:
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
-        with:
-          artifact_name: ${{ matrix.platform }}_${{ matrix.browser }}_allure-report
+        uses: ./.github/actions/deploy-page

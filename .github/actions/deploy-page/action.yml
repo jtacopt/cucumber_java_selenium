@@ -1,0 +1,40 @@
+name: 'Configure Git'
+description: 'Configure Git'
+author: jtacopt
+
+inputs:
+  branch:
+    description: 'GitHub Pages Branch'
+    default: 'gh_page'
+    required: false
+  artifact-name:
+    description: 'Page Artifact Source'
+    required: true
+  path:
+    description: 'Page Path'
+    default: ''
+    required: true
+runs:
+  using: composite
+
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.branch }}
+
+    - name: Get Page Artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: ${{ inputs.artifact-name }}
+
+    - name: Deploy Page
+      shell: bash
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions@github.com"
+        git config http.postBuffer 524288000
+        git add ${{ inputs.path }}
+        git commit -m "Allure Report | ${{ inputs.path }} | ${{ github.run_number }}"
+        git push
