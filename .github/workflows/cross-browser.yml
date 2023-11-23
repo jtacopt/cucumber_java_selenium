@@ -70,7 +70,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: gh_page
+          ref: gh_pages
 
       - name: Get Page Artifact
         uses: actions/download-artifact@v3
