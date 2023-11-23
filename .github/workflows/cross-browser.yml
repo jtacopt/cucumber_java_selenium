@@ -95,6 +95,10 @@ jobs:
             platform: mac
 
     steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh_pages
+
       - name: Get Page Artifact
         uses: actions/download-artifact@v3
         with:
