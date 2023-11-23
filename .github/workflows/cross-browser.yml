@@ -68,7 +68,7 @@ jobs:
   report:
     name: Report
     needs:
-      - test
+      - tests
     permissions:
       contents: write
       pages: write
