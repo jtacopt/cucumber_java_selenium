@@ -15,6 +15,7 @@
 
         <io.cucumber.version>7.14.0</io.cucumber.version>
         <io.qameta.allure.version>2.24.0</io.qameta.allure.version>
+        <io.qameta.allure.maven.version>2.12.0</io.qameta.allure.maven.version>
         <com.saucelabs.saucebindings-junit5.version>1.4.0</com.saucelabs.saucebindings-junit5.version>
         <org.seleniumhq.selenium.version>4.15.0</org.seleniumhq.selenium.version>
         <org.junit.platform.version>1.10.1</org.junit.platform.version>
@@ -112,4 +113,17 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>${io.qameta.allure.maven.version}</version>
+                <configuration>
+                    <reportVersion>${io.qameta.allure.version}</reportVersion>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
