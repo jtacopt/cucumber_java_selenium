@@ -48,3 +48,14 @@ jobs:
           name: ${{ matrix.platform }}_${{ matrix.browser }}_allure-results
           path: target/allure-results
           retention-days: 1
+
+      - name: Generate Report
+        run: make report
+
+      - name: Upload Report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: ${{ matrix.platform }}_${{ matrix.browser }}_allure-report
+          path: target/site/allure-maven-plugin
+          retention-days: 1
