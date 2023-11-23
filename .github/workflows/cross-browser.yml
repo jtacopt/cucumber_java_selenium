@@ -86,12 +86,23 @@ jobs:
           git commit -m "Results for $branch_name"
           git push origin "$branch_name"
           
-          git fetch origin gh_pages
+          # Verifica se a branch gh_pages está desatualizada
+          latest_gh_pages_commit=$(git ls-remote origin gh_pages | awk '{ print $1 }')
+          latest_branch_commit=$(git rev-parse HEAD)
+      
+          if [ "$latest_gh_pages_commit" != "$latest_branch_commit" ]; then
+            git fetch origin gh_pages
+            git checkout gh_pages
+            git reset --hard origin/gh_pages
+          fi
+      
+          # Continua com o rebase ou merge
+          git checkout "$branch_name"
+          git pull origin "$branch_name"
           git checkout gh_pages
-          git reset --hard origin/gh_pages
-         
+      
           git pull origin gh_pages
-          git rebase "$branch_name"
+          git rebase "$branch_name"  # ou git merge "$branch_name"
           git push origin gh_pages
           git push --delete origin "$branch_name"
 
