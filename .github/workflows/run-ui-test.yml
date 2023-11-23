@@ -11,12 +11,34 @@ on:
         description: 'Platform'
         type: string
         required: true
+      include-history:
+        description: 'Include test history'
+        type: boolean
+        required: true
+        default: true
 
 jobs:
+  pre-test:
+    name: Pre-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        if: ${{ inputs.include-history }}
+        with:
+          ref: gh_pages
+
+      - name: Upload Report
+        uses: actions/upload-artifact@v2
+        if: always() && ${{ inputs.include-history }}
+        with:
+          name: ${{ inputs.platform }}-${{ inputs.browser }}-allure-history
+          path: ${{ inputs.platform }}/${{ inputs.browser }}/history
+
   test:
     name: Test
     runs-on: ubuntu-latest
-    
+    needs:
+      - pre-test
     steps:
       - uses: actions/checkout@v4
   
@@ -33,7 +55,15 @@ jobs:
           BROWSER: ${{ inputs.browser }}
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
-  
+
+      - name: Add history
+        if: ${{ inputs.include-history }}
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ inputs.platform }}-${{ inputs.browser }}-allure-history
+          path: target/allure-results/history
+
+
       - name: Upload results
         uses: actions/upload-artifact@v3
         if: always()
@@ -56,7 +86,8 @@ jobs:
         with:
          name: ${{ inputs.platform }}_${{ inputs.browser }}_allure-report
          path: target/site/allure-maven-plugin
-         
+
+
   report:
     name: Report
     needs: 
