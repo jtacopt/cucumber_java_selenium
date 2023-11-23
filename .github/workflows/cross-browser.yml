@@ -93,6 +93,6 @@ jobs:
           git pull origin gh_pages
           git rebase "$branch_name"
           git push origin gh_pages
-          git push --delete origin branch_name
+          git push --delete origin "$branch_name"
 
 
