@@ -14,6 +14,7 @@ inputs:
     description: 'Page Path'
     default: ''
     required: true
+
 runs:
   using: composite
 
@@ -34,6 +35,7 @@ runs:
       run: |
         git config --global user.email "jtacopt@gmail.com"
         git config --global user.name "João Carvalho"
+        git remote set-url origin https://x-access-token:${{ secrets.PAT }}@github.com/${{ github.repository }}
         git add ${{ inputs.path }}
         git commit -m "Allure Report | ${{ inputs.path }} | ${{ github.run_number }}"
         git push
