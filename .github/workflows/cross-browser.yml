@@ -85,16 +85,10 @@ jobs:
           git add ${{ matrix.platform }}/${{ matrix.browser }}
           git commit -m "Results for $branch_name"
           git push origin "$branch_name"
-
-      - name: Merge Branches
-        run: |
           git checkout gh_pages
           git pull origin gh_pages
-          git merge <branch_name>
+          git merge branch_name
           git push origin gh_pages
-
-      - name: Delete Merged Branches
-        run: |
-          git push --delete origin <branch_name>
+          git push --delete origin branch_name
 
 
