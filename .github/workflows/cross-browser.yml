@@ -5,11 +5,6 @@ jobs:
   tests:
     name: Run Tests
 
-    permissions:
-      contents: write
-      pages: write
-      id-token: write
-
     strategy:
       fail-fast: false
       matrix:
@@ -30,7 +25,7 @@ jobs:
 
     uses: ./.github/workflows/run-ui-test.yml
     with:
-      platform: ${{ inputs.platform }}
-      browser: ${{ inputs.browser }}
+      platform: ${{ matrix.platform }}
+      browser: ${{ matrix.browser }}
     secrets: inherit
 
