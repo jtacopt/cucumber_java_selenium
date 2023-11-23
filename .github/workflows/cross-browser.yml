@@ -115,20 +115,20 @@ jobs:
           git commit -m "Results for $branch_name"
           git push origin "$branch_name"
           
-          # Tentativa de atualizar e incorporar mudanças da gh_pages na nova branch
-          git fetch origin gh_pages
-          git checkout "$branch_name"
-          git pull origin gh_pages
-          
-          # Tenta fazer o rebase na gh_pages
-          if ! git rebase gh_pages; then
-            # Se houver conflitos ou mudanças, atualiza novamente a nova branch com a gh_pages
-            git pull origin gh_pages
-          fi
-          
+
           # Tentativa de fazer push na gh_pages
           retries=10
           while [ $retries -gt 0 ]; do
+            # Tentativa de atualizar e incorporar mudanças da gh_pages na nova branch
+            git fetch origin gh_pages
+            git checkout "$branch_name"
+            git pull origin gh_pages
+          
+            # Tenta fazer o rebase na gh_pages
+            if ! git rebase gh_pages; then
+              # Se houver conflitos ou mudanças, atualiza novamente a nova branch com a gh_pages
+              git pull origin gh_pages
+            fi
             if ! git push origin "$branch_name":gh_pages; then
               ((retries--))
               echo "Retrying... $retries attempts left"
