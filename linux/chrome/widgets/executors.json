@@ -1,1 +1,2 @@
-[{"name":"Maven","type":"maven","buildName":"java-selenium"}]
+[{"name":"Maven","type":"maven","buildName":"java-selenium"},
+{"name":"GitHub","type":"github","buildName":"${{ github.action }}#${{ github.run_number }}","buildUrl":"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}]
