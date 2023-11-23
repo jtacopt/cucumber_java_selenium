@@ -4,6 +4,10 @@ on: [ push ]
 jobs:
   tests:
     name: Tests
+    environment:
+      name: ${{ matrix.platform }}-${{ matrix.browser }}-github-pages
+      url: ${{steps.deployment.outputs.page_url}}
+
     runs-on: ubuntu-latest
 
     strategy:
@@ -53,9 +57,11 @@ jobs:
         run: make report
 
       - name: Upload Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-pages-artifact@v2
         if: always()
         with:
-          name: ${{ matrix.platform }}_${{ matrix.browser }}_allure-report
           path: target/site/allure-maven-plugin
-          retention-days: 1
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
