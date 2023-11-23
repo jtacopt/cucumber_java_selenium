@@ -1,0 +1,117 @@
+name: Run UI Test
+
+on:
+  workflow_call:
+    inputs:
+      browser:
+        description: 'Browser'
+        type: string
+        required: true
+      platform:
+        description: 'Platform'
+        type: string
+        required: true
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+  
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+  
+      - name: Run Tests
+        run: make test
+        env:
+          PLATFORM: ${{ inputs.platform }}
+          BROWSER: ${{ inputs.browser }}
+          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+  
+      - name: Upload results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: ${{ inputs.platform }}_${{ inputs.browser }}_allure-results
+          path: target/allure-results
+          retention-days: 1
+  
+      - name: Generate Report
+        run: make report
+  
+      - name: Upload Report
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+         name: ${{ inputs.platform }}_${{ inputs.browser }}_allure-report
+         path: target/site/allure-maven-plugin
+         
+  report:
+    name: Report
+    needs: 
+      - test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh_pages
+
+      - name: Get Page Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ inputs.platform }}_${{ inputs.browser }}_allure-report
+          path: ${{ inputs.platform }}/${{ inputs.browser }}
+
+      - name: Create Branch and Push Results
+        run: |
+          git config --local user.email "actions@users.noreply.github.com"
+          git config --local user.name "GitHub Actions"
+          branch_name="${{ inputs.platform }}_${{ inputs.browser }}"
+          git checkout -b "$branch_name"
+          git add ${{ inputs.platform }}/${{ inputs.browser }}
+          git commit -m "Results for $branch_name"
+          git push origin "$branch_name"
+          
+          # Define a configuração pull.rebase como true
+          git config pull.rebase true
+          
+          # Verifica se a branch precisa ser atualizada com as alterações da gh_pages
+          needs_update=$(git rev-list HEAD...origin/gh_pages --count)
+          
+          # Se a branch não estiver atualizada, sincroniza e tenta fazer merge
+          if [ $needs_update -ne 0 ]; then
+            git fetch origin gh_pages
+            git checkout "$branch_name"
+            git pull origin gh_pages
+          
+            # Tenta fazer merge com a gh_pages
+            if ! git merge origin/gh_pages; then
+              # Se o merge falhar, atualiza novamente a branch com rebase
+              git pull --rebase origin gh_pages
+              sleep 5  # Espera 5 segundos
+              git merge origin/gh_pages
+            fi
+          
+            # Após a atualização e tentativas de merge, tenta fazer o push para a gh_pages
+            retries=10
+            while [ $retries -gt 0 ]; do
+              if ! git push origin "$branch_name":gh_pages; then
+                ((retries--))
+                echo "Retrying... $retries attempts left"
+              else
+                break
+              fi
+            done
+          fi
+
+      - name: Apagar a nova branch
+        if: always()
+        run: |
+          branch_name="${{ inputs.platform }}_${{ inputs.browser }}"
+          git push --delete origin "$branch_name"      
