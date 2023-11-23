@@ -68,3 +68,7 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: ./.github/actions/deploy-page
+        with:
+          branch: 'gh_pages'
+          artifact-name: ${{ matrix.platform }}_${{ matrix.browser }}_allure-results
+          path: ${{ matrix.platform }}/${{ matrix.browser }}/allure-results
