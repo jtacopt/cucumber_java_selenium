@@ -92,7 +92,7 @@ jobs:
             git fetch origin gh_pages
             git checkout gh_pages
             git reset --hard origin/gh_pages
-            
+            git pull
             git pull origin gh_pages
             git rebase "$branch_name"  # ou git merge "$branch_name"
             
