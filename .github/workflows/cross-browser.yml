@@ -4,9 +4,11 @@ on: [ push ]
 jobs:
   tests:
     name: Tests
-    environment:
-      name: ${{ matrix.platform }}-${{ matrix.browser }}-github-pages
-      url: ${{steps.deployment.outputs.page_url}}
+
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
 
     runs-on: ubuntu-latest
 
@@ -61,6 +63,9 @@ jobs:
         if: always()
         with:
           path: target/site/allure-maven-plugin
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v3
 
       - name: Deploy to GitHub Pages
         id: deployment
