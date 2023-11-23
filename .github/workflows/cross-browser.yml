@@ -59,22 +59,38 @@ jobs:
         run: make report
 
       - name: Upload Report
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-artifact@v2
         if: always()
         with:
           name: ${{ matrix.platform }}_${{ matrix.browser }}_allure-report
           path: target/site/allure-maven-plugin
 
-#      - name: Deploy to GitHub Pages
-#        uses: ./.github/actions/deploy-page
-#        with:
-#          branch: 'gh_pages'
-#          artifact-name: ${{ matrix.platform }}_${{ matrix.browser }}_allure-results
-#          path: ${{ matrix.platform }}/${{ matrix.browser }}/allure-results
-#          token: ${{ secrets.PAT }}
+      - run: rm -r ./*
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          artifact_name: ${{ matrix.platform }}_${{ matrix.browser }}_allure-report
+          ref: gh_page
+
+      - name: Get Page Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ matrix.platform }}_${{ matrix.browser }}_allure-report
+          path: ${{ matrix.platform }}/${{ matrix.browser }}
+
+      - name: Upload Page
+        run: |
+          git config --local user.email "actions@users.noreply.github.com"
+          git config --local user.name "GitHub Actions"
+          git add ${{ matrix.platform }}/${{ matrix.browser }}
+          git commit -m "Commit message"
+          git push
+
+# Funciona para uma pagina
+#    steps:
+#      - name:
+#      - name: Deploy to GitHub Pages
+#        id: deployment
+#        uses: actions/deploy-pages@v2
+#        with:
+#          artifact_name: ${{ matrix.platform }}_${{ matrix.browser }}_allure-report
