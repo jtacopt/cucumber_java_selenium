@@ -115,7 +115,9 @@ jobs:
           git commit -m "Results for $branch_name"
           git push origin "$branch_name"
           
-
+          # Define a configuração pull.rebase como true
+          git config pull.rebase true
+          
           # Verifica se a branch precisa ser atualizada com as alterações da gh_pages
           needs_update=$(git rev-list HEAD...origin/gh_pages --count)
             
