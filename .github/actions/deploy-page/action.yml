@@ -32,6 +32,8 @@ runs:
     - name: Deploy Page
       shell: bash
       run: |
+        git config --global user.email "jtacopt@gmail.com"
+        git config --global user.name "João Carvalho"
         git add ${{ inputs.path }}
         git commit -m "Allure Report | ${{ inputs.path }} | ${{ github.run_number }}"
         git push
