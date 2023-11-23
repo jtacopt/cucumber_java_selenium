@@ -59,14 +59,13 @@ jobs:
         run: make report
 
       - name: Upload Report
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages@v2
         if: always()
         with:
           name: ${{ matrix.platform }}_${{ matrix.browser }}_allure-report
           path: target/site/allure-maven-plugin
 
       - name: Deploy to GitHub Pages
-        id: deployment
         uses: ./.github/actions/deploy-page
         with:
           branch: 'gh_pages'
