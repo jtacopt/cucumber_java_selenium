@@ -116,27 +116,37 @@ jobs:
           git push origin "$branch_name"
           
 
-          # Tentativa de fazer push na gh_pages
-          retries=10
-          while [ $retries -gt 0 ]; do
-            # Tentativa de atualizar e incorporar mudanças da gh_pages na nova branch
+          # Verifica se a branch precisa ser atualizada com as alterações da gh_pages
+          needs_update=$(git rev-list HEAD...origin/gh_pages --count)
+            
+          # Se a branch não estiver atualizada, sincroniza e tenta fazer merge
+          if [ $needs_update -ne 0 ]; then
             git fetch origin gh_pages
             git checkout "$branch_name"
             git pull origin gh_pages
-          
-            # Tenta fazer o rebase na gh_pages
-            if ! git rebase gh_pages; then
-              # Se houver conflitos ou mudanças, atualiza novamente a nova branch com a gh_pages
-              git pull origin gh_pages
+            
+            # Tenta fazer merge com a gh_pages
+            if ! git merge origin/gh_pages; then
+              # Se o merge falhar, atualiza novamente a branch com rebase
+              git pull --rebase origin gh_pages
+              sleep 5  # Espera 5 segundos
+              git merge origin/gh_pages
             fi
-            if ! git push origin "$branch_name":gh_pages; then
-              ((retries--))
-              echo "Retrying... $retries attempts left"
-            else
-              # Se o push for bem-sucedido, sai do loop
-              break
-            fi
-          done
-          
-          # Apaga a nova branch
+            
+            # Após a atualização e tentativas de merge, tenta fazer o push para a gh_pages
+            retries=10
+            while [ $retries -gt 0 ]; do
+              if ! git push origin "$branch_name":gh_pages; then
+                ((retries--))
+                echo "Retrying... $retries attempts left"
+              else
+                break
+              fi
+            done
+          fi
+
+      - name: Apagar a nova branch
+        if: always()
+        run: |
+          branch_name="${{ matrix.platform }}_${{ matrix.browser }}"
           git push --delete origin "$branch_name"
