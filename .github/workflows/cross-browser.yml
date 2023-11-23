@@ -71,3 +71,4 @@ jobs:
           branch: 'gh_pages'
           artifact-name: ${{ matrix.platform }}_${{ matrix.browser }}_allure-results
           path: ${{ matrix.platform }}/${{ matrix.browser }}/allure-results
+          token: ${{ secrets.PAT }}
