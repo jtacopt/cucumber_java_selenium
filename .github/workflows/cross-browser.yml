@@ -65,9 +65,6 @@ jobs:
           name: ${{ matrix.platform }}_${{ matrix.browser }}_allure-report
           path: target/site/allure-maven-plugin
 
-      - name: Clean Dir
-        run: rm -rf .*
-
       - name: Get Page Artifact
         uses: actions/download-artifact@v3
         with:
