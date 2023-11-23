@@ -86,24 +86,24 @@ jobs:
           git commit -m "Results for $branch_name"
           git push origin "$branch_name"
           
-          # Verifica se a branch gh_pages está desatualizada
-          latest_gh_pages_commit=$(git ls-remote origin gh_pages | awk '{ print $1 }')
-          latest_branch_commit=$(git rev-parse HEAD)
-      
-          if [ "$latest_gh_pages_commit" != "$latest_branch_commit" ]; then
+          # Loop para tentar o push até ser bem-sucedido
+          retries=10
+          while [ $retries -gt 0 ]; do
             git fetch origin gh_pages
             git checkout gh_pages
             git reset --hard origin/gh_pages
+            
+            git pull origin gh_pages
+            git rebase "$branch_name"  # ou git merge "$branch_name"
+            
+            if ! git push origin gh_pages; then
+              ((retries--))
+              echo "Retrying... $retries attempts left"
+            else
+              break  # Sai do loop se o push for bem-sucedido
           fi
+          done
       
-          # Continua com o rebase ou merge
-          git checkout "$branch_name"
-          git pull origin "$branch_name"
-          git checkout gh_pages
-      
-          git pull origin gh_pages
-          git rebase "$branch_name"  # ou git merge "$branch_name"
-          git push origin gh_pages
           git push --delete origin "$branch_name"
 
 
