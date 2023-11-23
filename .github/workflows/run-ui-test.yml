@@ -14,7 +14,7 @@ on:
       include-history:
         description: 'Include test history'
         type: boolean
-        required: true
+        required: false
         default: true
 
 jobs:
