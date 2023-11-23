@@ -103,7 +103,7 @@ jobs:
             while [ $retries -gt 0 ]; do
               if ! git push origin "$branch_name":gh_pages; then
                 ((retries--))
-                git pull
+                git pull origin gh_pages
                 echo "Retrying... $retries attempts left"
               else
                 break
