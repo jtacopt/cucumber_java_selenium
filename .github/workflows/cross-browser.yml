@@ -5,6 +5,11 @@ jobs:
   tests:
     name: Run Tests
 
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
     strategy:
       fail-fast: false
       matrix:
@@ -28,3 +33,4 @@ jobs:
       os: ${{ matrix.os }}
       browser: ${{ matrix.browser }}
     secrets: inherit
+
