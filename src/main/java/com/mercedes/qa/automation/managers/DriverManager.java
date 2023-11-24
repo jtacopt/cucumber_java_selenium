@@ -4,7 +4,7 @@ import com.mercedes.qa.automation.configs.SeleniumConfig;
 import com.mercedes.qa.automation.configs.TestConfig;
 import com.mercedes.qa.automation.enums.EnvironmentType;
 import com.mercedes.qa.automation.enums.SeleniumBrowser;
-import com.mercedes.qa.automation.enums.SeleniumPlatform;
+import com.mercedes.qa.automation.enums.OperativeSystem;
 import com.saucelabs.saucebindings.DataCenter;
 import com.saucelabs.saucebindings.SaucePlatform;
 import com.saucelabs.saucebindings.SauceSession;
@@ -104,7 +104,7 @@ public class DriverManager {
         throw new NotFoundException();
     }
 
-    private SaucePlatform getSaucePlatform(final SeleniumPlatform platform) {
+    private SaucePlatform getSaucePlatform(final OperativeSystem platform) {
         return switch (platform) {
             case MAC -> SaucePlatform.MAC_VENTURA;
             case LINUX -> SaucePlatform.LINUX;
