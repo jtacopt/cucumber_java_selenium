@@ -19,7 +19,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
 import java.io.IOException;
@@ -117,8 +119,8 @@ public class DriverManager {
         return switch (browser) {
             case EDGE -> new EdgeDriver(new EdgeOptions());
             case CHROME -> new ChromeDriver(new ChromeOptions());
-            case FIREFOX -> null;
-            case SAFARI -> null;
+            case FIREFOX -> new FirefoxDriver();
+            case SAFARI -> new SafariDriver();
         };
     }
 

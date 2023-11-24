@@ -68,6 +68,7 @@ jobs:
         run: make test
         env:
           PLATFORM: ${{ inputs.platform }}
+          OS: ${{ inputs.os }}
           BROWSER: ${{ inputs.browser }}
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
