@@ -1,12 +1,12 @@
 package com.mercedes.qa.automation.enums;
 
-public enum SeleniumPlatform {
+public enum OperativeSystem {
     WINDOWS,
     MAC,
     LINUX;
 
 
-    public static SeleniumPlatform parse(final String value) {
+    public static OperativeSystem parse(final String value) {
         return switch (value.toLowerCase()) {
             case "win", "windows", "pc" -> WINDOWS;
             case "mac" -> MAC;
