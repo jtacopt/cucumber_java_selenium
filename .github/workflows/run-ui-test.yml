@@ -127,7 +127,7 @@ jobs:
           git config --local user.name "GitHub Actions"
           branch_name="${{ inputs.platform }}_${{ inputs.os }}_${{ inputs.browser }}"
           git checkout -b "$branch_name"
-          git add ${{ inputs.platform }}/${{ inputs.browser }}
+          git add ${{ inputs.platform }}/${{ inputs.os }}/${{ inputs.browser }}
           git commit -m "Results for $branch_name"
           git push origin "$branch_name"
           
