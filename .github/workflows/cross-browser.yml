@@ -12,17 +12,17 @@ jobs:
         browser:
           - chrome
           - firefox
-        platform:
+        os:
           - win
           - mac
           - linux
         include:
           - browser: safari
-            platform: mac
+            os: mac
           - browser: edge
-            platform: win
+            os: win
           - browser: edge
-            platform: mac
+            os: mac
 
     steps:
       - uses: actions/checkout@v3
@@ -36,7 +36,7 @@ jobs:
       - name: Run Tests
         run: make test
         env:
-          PLATFORM: ${{ matrix.platform }}
+          OS: ${{ matrix.os }}
           BROWSER: ${{ matrix.browser }}
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
