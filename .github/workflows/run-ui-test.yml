@@ -68,7 +68,6 @@ jobs:
         run: make test
         env:
           PLATFORM: ${{ inputs.platform }}
-          OS: ${{ inputs.os }}
           BROWSER: ${{ inputs.browser }}
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
@@ -79,15 +78,6 @@ jobs:
         with:
           name: ${{ inputs.platform }}-${{ inputs.os }}-${{ inputs.browser }}-allure-history
           path: target/allure-results/history
-
-
-      - name: Upload results
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: ${{ inputs.platform }}_${{ inputs.os }}_${{ inputs.browser }}_allure-results
-          path: target/allure-results
-          retention-days: 1
   
       - name: Generate Report
         run: make report

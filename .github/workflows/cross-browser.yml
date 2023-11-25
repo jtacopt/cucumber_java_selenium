@@ -13,24 +13,26 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        platform:
+          - windows
+          - mac
+          - linux
         browser:
           - chrome
           - firefox
-        os:
-          - win
-          - mac
-          - linux
         include:
-          - browser: safari
-            os: mac
-          - browser: edge
-            os: win
-          - browser: edge
-            os: mac
+          - platform: mac
+            browser: safari
+          - platform: windows
+            browser: edge
+          - platform: mac
+            browser: edge
+          - platform: ios
+            browser: safari
 
     uses: ./.github/workflows/run-ui-test.yml
     with:
-      os: ${{ matrix.os }}
+      platform: ${{ matrix.platform }}
       browser: ${{ matrix.browser }}
     secrets: inherit
 

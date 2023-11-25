@@ -5,6 +5,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.UnhandledAlertException;
 
 public class ClassAttributeSD {
 
@@ -22,7 +23,11 @@ public class ClassAttributeSD {
 
     @When("The user clicks in the Primary Button")
     public void theUserClicksInThePrimaryButton() {
-        testContext.getWebDriverManager().getDriver().findElement(By.cssSelector(".btn-primary")).click();
+        try {
+            testContext.getWebDriverManager().getDriver().findElement(By.cssSelector(".btn-primary")).click();
+        } catch (UnhandledAlertException e) {
+            // ignore
+        }
     }
 
     @And("The user accept the alert")
