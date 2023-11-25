@@ -3,7 +3,10 @@ package com.mercedes.qa.automation.enums;
 public enum OperativeSystem {
     WINDOWS,
     MAC,
-    LINUX;
+    LINUX,
+     IOS,
+
+    ANDROID;
 
 
     public static OperativeSystem parse(final String value) {

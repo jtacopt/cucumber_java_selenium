@@ -112,6 +112,13 @@
             <version>1.18.30</version>
             <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>io.appium</groupId>
+            <artifactId>java-client</artifactId>
+            <version>9.0.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

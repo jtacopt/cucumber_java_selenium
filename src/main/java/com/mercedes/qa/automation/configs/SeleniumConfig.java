@@ -2,7 +2,7 @@ package com.mercedes.qa.automation.configs;
 
 import com.mercedes.qa.automation.enums.EnvironmentType;
 import com.mercedes.qa.automation.enums.SeleniumBrowser;
-import com.mercedes.qa.automation.enums.OperativeSystem;
+import org.openqa.selenium.Platform;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -47,8 +47,8 @@ public class SeleniumConfig {
      *
      * @return the platform value as a string.
      */
-    public OperativeSystem getPlatform() {
-        return OperativeSystem.parse(getProperty("OS", this.seleniumProperties));
+    public Platform getPlatform() {
+        return Platform.fromString(getProperty("PLATFORM", this.seleniumProperties));
     }
 
     /**
