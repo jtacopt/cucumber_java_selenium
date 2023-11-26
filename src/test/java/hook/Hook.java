@@ -4,7 +4,8 @@ import com.saucelabs.saucebindings.SauceSession;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
-import org.junit.jupiter.api.extension.ExtensionContext;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import step_definition.TestContext;
 
 public class Hook {
@@ -26,6 +27,9 @@ public class Hook {
         if (session != null) {
             session.stop(!scenario.isFailed());
         } else {
+            String result = scenario.isFailed() ? "failed" : "passed";
+            JavascriptExecutor js = (JavascriptExecutor) driverManager.getDriver();
+            js.executeScript(String.format("sauce:job-result=%s",result));
             driverManager.getDriver().quit();
         }
     }
