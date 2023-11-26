@@ -18,7 +18,6 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.Platform;
-import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -39,6 +38,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.openqa.selenium.Platform.ANDROID;
 import static org.openqa.selenium.Platform.IOS;
 
 /**
@@ -113,6 +113,21 @@ public class DriverManager {
             caps.setCapability("sauce:options", sauceOptions);
             URL url = new URL("https://ondemand.eu-central-1.saucelabs.com:443/wd/hub");
             return new IOSDriver(url, caps);
+        }
+        if (platform.equals(ANDROID)) {
+            MutableCapabilities caps = new MutableCapabilities();
+            caps.setCapability("platformName", "Android");
+            caps.setCapability("browserName", "Chrome");
+            caps.setCapability("appium:deviceName", "Google.*");
+            caps.setCapability("appium:platformVersion", "14");
+            caps.setCapability("appium:automationName", "UiAutomator2");
+            MutableCapabilities sauceOptions = new MutableCapabilities();
+            sauceOptions.setCapability("username", System.getenv("SAUCE_USERNAME"));
+            sauceOptions.setCapability("accessKey", System.getenv("SAUCE_ACCESS_KEY"));
+            caps.setCapability("sauce:options", sauceOptions);
+
+            URL url = new URL("https://ondemand.eu-central-1.saucelabs.com:443/wd/hub");
+            return new AndroidDriver(url, caps);
         } else {
             session = new SauceSession(getSauceOptions());
             session.setDataCenter(dataCenter);
