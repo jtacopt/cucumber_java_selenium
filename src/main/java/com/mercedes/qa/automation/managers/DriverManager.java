@@ -8,7 +8,6 @@ import com.saucelabs.saucebindings.DataCenter;
 import com.saucelabs.saucebindings.SaucePlatform;
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.options.SauceOptions;
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.windows.WindowsDriver;
@@ -31,11 +30,11 @@ import org.openqa.selenium.safari.SafariOptions;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.InvalidParameterException;
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 import static org.openqa.selenium.Platform.ANDROID;
@@ -100,19 +99,17 @@ public class DriverManager {
             MutableCapabilities caps = new MutableCapabilities();
             caps.setCapability("platformName", "iOS");
             caps.setCapability("browserName", "Safari");
-            caps.setCapability("appium:deviceName", "iPhone Simulator");
-            caps.setCapability("appium:platformVersion", "16.2");
+            caps.setCapability("appium:deviceName", "iPhone.*");
+            caps.setCapability("appium:platformVersion", "17");
             caps.setCapability("appium:automationName", "XCUITest");
 
 
             MutableCapabilities sauceOptions = new MutableCapabilities();
             sauceOptions.setCapability("appiumVersion", "2.0.0");
-            sauceOptions.setCapability("username", System.getenv("SAUCE_USERNAME"));
-            sauceOptions.setCapability("accessKey", System.getenv("SAUCE_ACCESS_KEY"));
+            sauceOptions.merge(getSauceLabsCredentials());
             sauceOptions.setCapability("deviceOrientation", "PORTRAIT");
             caps.setCapability("sauce:options", sauceOptions);
-            URL url = new URL("https://ondemand.eu-central-1.saucelabs.com:443/wd/hub");
-            return new IOSDriver(url, caps);
+            return new IOSDriver(getSauceLabsURL(), caps);
         }
         if (platform.equals(ANDROID)) {
             MutableCapabilities caps = new MutableCapabilities();
@@ -122,19 +119,22 @@ public class DriverManager {
             caps.setCapability("appium:platformVersion", "14");
             caps.setCapability("appium:automationName", "UiAutomator2");
             MutableCapabilities sauceOptions = new MutableCapabilities();
-            sauceOptions.setCapability("username", System.getenv("SAUCE_USERNAME"));
-            sauceOptions.setCapability("accessKey", System.getenv("SAUCE_ACCESS_KEY"));
+            sauceOptions.setCapability("appiumVersion", "2.0.0");
+            sauceOptions.merge(getSauceLabsCredentials());
             caps.setCapability("sauce:options", sauceOptions);
 
-            URL url = new URL("https://ondemand.eu-central-1.saucelabs.com:443/wd/hub");
-            return new AndroidDriver(url, caps);
+            return new AndroidDriver(getSauceLabsURL(), caps);
         } else {
             session = new SauceSession(getSauceOptions());
             session.setDataCenter(dataCenter);
             return session.start();
         }
-
     }
+
+    private URL getSauceLabsURL() throws URISyntaxException, MalformedURLException {
+        return new URI("https://ondemand.eu-central-1.saucelabs.com:443/wd/hub").toURL();
+    }
+
 
     public SauceOptions getSauceOptions() {
         var browser = seleniumConfig.getBrowser();
@@ -198,17 +198,6 @@ public class DriverManager {
         return new WindowsDriver(new DesiredCapabilities());
     }
 
-    public WebDriver getMobileDrivers() throws MalformedURLException {
-        AppiumDriver result;
-        Platform x = null;
-        if (x.equals(IOS)) {
-            result = new IOSDriver(new URL(""));
-        } else {
-            result = new AndroidDriver(new DesiredCapabilities());
-        }
-        return result;
-    }
-
     private WebDriver initLocalDriver() {
         var browser = seleniumConfig.getBrowser();
         return switch (browser) {
@@ -231,23 +220,11 @@ public class DriverManager {
         return browserCapabilities.merge(sauceCapabilities);
     }
 
-    private Map<String, Object> getSauceLabsCapabilities() {
-        Map<String, Object> sauceOptions = new HashMap<>();
-        sauceOptions.put("username", System.getenv("SAUCE_USERNAME"));
-        sauceOptions.put("accessKey", System.getenv("SAUCE_ACCESS_KEY"));
-        return sauceOptions;
-    }
-
-    /**
-     * Returns a Map of options for Sauce Labs.
-     *
-     * @return the Map of options for Sauce Labs.
-     */
-    private Map<String, Object> getSauceLabsOptions() {
-        Map<String, Object> sauceOptions = new HashMap<>();
-
-        sauceOptions.put("screenResolution", "1920x1080");
-        return sauceOptions;
+    private Capabilities getSauceLabsCredentials() {
+        MutableCapabilities sauceCredentials = new MutableCapabilities();
+        sauceCredentials.setCapability("username", System.getenv("SAUCE_USERNAME"));
+        sauceCredentials.setCapability("accessKey", System.getenv("SAUCE_ACCESS_KEY"));
+        return sauceCredentials;
     }
 
     /**
