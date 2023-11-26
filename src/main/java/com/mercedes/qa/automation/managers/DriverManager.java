@@ -106,7 +106,7 @@ public class DriverManager {
 
             MutableCapabilities sauceOptions = new MutableCapabilities();
             sauceOptions.setCapability("appiumVersion", "2.0.0");
-            sauceOptions.merge(getSauceLabsCredentials());
+            sauceOptions = sauceOptions.merge(getSauceLabsCredentials());
             sauceOptions.setCapability("deviceOrientation", "PORTRAIT");
             caps.setCapability("sauce:options", sauceOptions);
             return new IOSDriver(getSauceLabsURL(), caps);
@@ -120,7 +120,7 @@ public class DriverManager {
             caps.setCapability("appium:automationName", "UiAutomator2");
             MutableCapabilities sauceOptions = new MutableCapabilities();
             sauceOptions.setCapability("appiumVersion", "2.0.0");
-            sauceOptions.merge(getSauceLabsCredentials());
+            sauceOptions = sauceOptions.merge(getSauceLabsCredentials());
             caps.setCapability("sauce:options", sauceOptions);
 
             return new AndroidDriver(getSauceLabsURL(), caps);
