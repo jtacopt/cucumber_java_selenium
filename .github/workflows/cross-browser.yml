@@ -29,6 +29,8 @@ jobs:
             browser: edge
           - platform: ios
             browser: safari
+          - platform: android
+            browser: chrome
 
     uses: ./.github/workflows/run-ui-test.yml
     with:
