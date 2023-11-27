@@ -35,6 +35,6 @@ jobs:
     uses: ./.github/workflows/run-ui-test.yml
     with:
       platform: ${{ matrix.platform }}
-      app: ${{ matrix.browser }}
+      app: ${{ matrix.app }}
     secrets: inherit
 
