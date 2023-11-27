@@ -17,17 +17,23 @@ jobs:
           - windows
           - mac
           - linux
+        platform-version:
+          - latest
         app:
           - chrome
           - firefox
         include:
           - platform: mac
+            platform-version: latest
             app: safari
           - platform: windows
+            platform-version: latest
             app: edge
           - platform: mac
+            platform-version: latest
             app: edge
           - platform: ios
+            platform-version: latest
             app: safari
           - platform: android
             platform-version: 12
