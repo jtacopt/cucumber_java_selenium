@@ -30,11 +30,16 @@ jobs:
           - platform: ios
             app: safari
           - platform: android
+            platform-version: 12
+            app: chrome
+          - platform: android
+            platform-version: 14
             app: chrome
 
     uses: ./.github/workflows/run-ui-test.yml
     with:
       platform: ${{ matrix.platform }}
+      platform-version: ${{ matrix.platform-version }}
       app: ${{ matrix.app }}
     secrets: inherit
 

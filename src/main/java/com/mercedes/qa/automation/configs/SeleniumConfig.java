@@ -51,6 +51,9 @@ public class SeleniumConfig {
         return Platform.fromString(getProperty("PLATFORM", this.seleniumProperties));
     }
 
+    public String getPlatformVersion() {
+        return getProperty("PLATFORM_VERSION", this.seleniumProperties);
+    }
     /**
      * Retrieves the browser value from the Selenium configuration
      * and returns it as a SeleniumBrowser object.

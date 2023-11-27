@@ -118,7 +118,7 @@ public class DriverManager {
             caps.setCapability("platformName", "Android");
             caps.setCapability("browserName", "Chrome");
             caps.setCapability("appium:deviceName", "Google.*");
-            caps.setCapability("appium:platformVersion", "14");
+            caps.setCapability("appium:platformVersion", seleniumConfig.getPlatformVersion());
             caps.setCapability("appium:automationName", "UiAutomator2");
             MutableCapabilities sauceOptions = new MutableCapabilities();
             sauceOptions.setCapability("appiumVersion", "2.0.0");
