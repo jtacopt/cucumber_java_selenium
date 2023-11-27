@@ -13,7 +13,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <io.cucumber.version>7.14.0</io.cucumber.version>
+        <io.cucumber.version>7.14.1</io.cucumber.version>
         <io.qameta.allure.version>2.24.0</io.qameta.allure.version>
         <io.qameta.allure.maven.version>2.12.0</io.qameta.allure.maven.version>
         <com.saucelabs.saucebindings-junit5.version>1.4.0</com.saucelabs.saucebindings-junit5.version>
