@@ -191,7 +191,7 @@ public class DriverManager {
             case VENTURA -> null;
             case UNIX -> null;
             case LINUX -> SaucePlatform.LINUX;
-            case WINDOWS -> SaucePlatform.WINDOWS_10;
+            case WINDOWS -> SaucePlatform.WINDOWS_11;
             case IOS -> null;
             case ANDROID -> null;
             case ANY -> null;

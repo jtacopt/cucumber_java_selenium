@@ -4,25 +4,21 @@ on:
   workflow_call:
     inputs:
       platform:
-        description: 'Platform (Web/Mobile/Desktop)'
+        description: 'Platform (Mac/Windows/Linux/IOS/Android)'
         type: string
         default: web
+      platform-version:
+        description: 'Platform version'
+        default: latest
+        type: string
+      app:
+        description: 'App used to perform the testes'
+        type: string
+        default: 'chrome'
       environment:
         description: 'Environment(int/uat/pprod)'
         type: string
         default: uat
-      os:
-        description: 'Operative System (Mac/Win/Linux)'
-        type: string
-        default: 'win'
-      os-version:
-        description: 'OS version Win(8/10/11)'
-        type: string
-        default: WIN_11
-      browser:
-        description: 'Browser'
-        type: string
-        default: ''
       addtional-path:
         description: 'Additional Path'
         type: string
@@ -47,8 +43,8 @@ jobs:
         uses: actions/upload-artifact@v2
         if: always() && ${{ inputs.include-history }}
         with:
-          name: ${{ inputs.platform }}-${{ inputs.os }}-${{ inputs.browser }}-allure-history
-          path: ${{ inputs.platform }}/${{ inputs.os }}/${{ inputs.browser }}/history
+          name: ${{ inputs.platform }}-${{ inputs.platform-version }}-${{ inputs.app }}-${{ inputs.environment }}-allure-history
+          path: ${{ inputs.platform }}/${{ inputs.platform-version }}/${{ inputs.app }}/${{ inputs.environment }}/history
 
   test:
     name: Test
@@ -76,7 +72,7 @@ jobs:
         if: ${{ inputs.include-history }}
         uses: actions/download-artifact@v3
         with:
-          name: ${{ inputs.platform }}-${{ inputs.os }}-${{ inputs.browser }}-allure-history
+          name: ${{ inputs.platform }}-${{ inputs.platform-version }}-${{ inputs.app }}-${{ inputs.environment }}-allure-history
           path: target/allure-results/history
   
       - name: Generate Report
@@ -91,7 +87,7 @@ jobs:
         uses: actions/upload-artifact@v2
         if: always()
         with:
-         name: ${{ inputs.platform }}_${{ inputs.os }}_${{ inputs.browser }}_allure-report
+         name: ${{ inputs.platform }}-${{ inputs.platform-version }}-${{ inputs.app }}-${{ inputs.environment }}-allure-report
          path: target/site/allure-maven-plugin
 
 
@@ -108,16 +104,16 @@ jobs:
       - name: Get Page Artifact
         uses: actions/download-artifact@v3
         with:
-          name: ${{ inputs.platform }}_${{ inputs.os }}_${{ inputs.browser }}_allure-report
-          path: ${{ inputs.platform }}/${{ inputs.os }}/${{ inputs.browser }}
+          name: ${{ inputs.platform }}-${{ inputs.platform-version }}-${{ inputs.app }}-${{ inputs.environment }}-allure-report
+          path: ${{ inputs.platform }}/${{ inputs.platform-version }}/${{ inputs.app }}/${{ inputs.environment }}
 
       - name: Create Branch and Push Results
         run: |
           git config --local user.email "actions@users.noreply.github.com"
           git config --local user.name "GitHub Actions"
-          branch_name="${{ inputs.platform }}_${{ inputs.os }}_${{ inputs.browser }}"
+          branch_name="${{ inputs.platform }}-${{ inputs.platform-version }}-${{ inputs.app }}-${{ inputs.environment }}-${{ github.run_id }}"
           git checkout -b "$branch_name"
-          git add ${{ inputs.platform }}/${{ inputs.os }}/${{ inputs.browser }}
+          git add ${{ inputs.platform }}/${{ inputs.platform-version }}/${{ inputs.app }}/${{ inputs.environment }}
           git commit -m "Results for $branch_name"
           git push origin "$branch_name"
           
@@ -132,7 +128,7 @@ jobs:
           
             if ! git merge origin/gh_pages; then
               git pull --rebase origin gh_pages
-              sleep 5  # Espera 5 segundos
+              sleep 5 
               git merge origin/gh_pages
             fi
           
@@ -148,8 +144,8 @@ jobs:
             done
           fi
 
-      - name: Apagar a nova branch
+      - name: Delete Branch
         if: always()
         run: |
-          branch_name="${{ inputs.platform }}_${{ inputs.os }}_${{ inputs.browser }}"
+          branch_name="${{ inputs.platform }}-${{ inputs.platform-version }}-${{ inputs.app }}-${{ inputs.environment }}-${{ github.run_id }}"
           git push --delete origin "$branch_name"      
