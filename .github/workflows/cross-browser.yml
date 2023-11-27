@@ -17,24 +17,24 @@ jobs:
           - windows
           - mac
           - linux
-        browser:
+        app:
           - chrome
           - firefox
         include:
           - platform: mac
-            browser: safari
+            app: safari
           - platform: windows
-            browser: edge
+            app: edge
           - platform: mac
-            browser: edge
+            app: edge
           - platform: ios
-            browser: safari
+            app: safari
           - platform: android
-            browser: chrome
+            app: chrome
 
     uses: ./.github/workflows/run-ui-test.yml
     with:
       platform: ${{ matrix.platform }}
-      browser: ${{ matrix.browser }}
+      app: ${{ matrix.browser }}
     secrets: inherit
 
