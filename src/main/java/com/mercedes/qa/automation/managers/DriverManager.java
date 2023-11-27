@@ -1,5 +1,6 @@
 package com.mercedes.qa.automation.managers;
 
+import com.mercedes.qa.automation.configs.SauceLabsConfig;
 import com.mercedes.qa.automation.configs.SeleniumConfig;
 import com.mercedes.qa.automation.configs.TestConfig;
 import com.mercedes.qa.automation.enums.EnvironmentType;
@@ -52,6 +53,7 @@ public class DriverManager {
     /**
      * The WebDriver instance used for testing.
      */
+    @Getter
     private WebDriver driver;
     @Getter
     private SauceSession session;
@@ -131,8 +133,10 @@ public class DriverManager {
         }
     }
 
-    private URL getSauceLabsURL() throws URISyntaxException, MalformedURLException {
-        return new URI("https://ondemand.eu-central-1.saucelabs.com:443/wd/hub").toURL();
+    @SneakyThrows
+    private URL getSauceLabsURL() {
+        var sauceLabsConfig = new SauceLabsConfig();
+        return new URI(sauceLabsConfig.getUrl()).toURL();
     }
 
 
@@ -194,10 +198,6 @@ public class DriverManager {
         };
     }
 
-    public WebDriver getDesktopDriver() {
-        return new WindowsDriver(new DesiredCapabilities());
-    }
-
     private WebDriver initLocalDriver() {
         var browser = seleniumConfig.getBrowser();
         return switch (browser) {
@@ -208,17 +208,6 @@ public class DriverManager {
         };
     }
 
-    /**
-     * Builds the Capabilities object for the WebDriver based on the SeleniumBrowser and Sauce Labs options.
-     *
-     * @return the Capabilities object for the WebDriver.
-     */
-    private Capabilities buildCapabilities() {
-        SeleniumBrowser browser = seleniumConfig.getBrowser();
-        var browserCapabilities = browser.getCapabilities();
-        MutableCapabilities sauceCapabilities = new MutableCapabilities();
-        return browserCapabilities.merge(sauceCapabilities);
-    }
 
     private Capabilities getSauceLabsCredentials() {
         MutableCapabilities sauceCredentials = new MutableCapabilities();
@@ -227,18 +216,6 @@ public class DriverManager {
         return sauceCredentials;
     }
 
-    /**
-     * Gets the value of the specified system property or environment variable.
-     *
-     * @param key the name of the system property or environment variable to retrieve.
-     * @return the value of the specified system property or environment variable.
-     * @throws InvalidParameterException if the specified system property or environment variable is not set.
-     */
-    private String getSystemProperty(final String key) {
-        return Optional.ofNullable(System.getProperty(key) == null ? System.getenv(key) : System.getProperty(key))
-                .orElseThrow(
-                        () -> new InvalidParameterException(MessageFormat.format("Missing value for key {}", key)));
-    }
 
     /**
      * Closes the WebDriver instance.
@@ -247,21 +224,7 @@ public class DriverManager {
         getDriver().close();
     }
 
-    /**
-     * Gets the WebDriver instance used for testing.
-     *
-     * @return the WebDriver instance used for testing.
-     */
-    public WebDriver getDriver() {
-        return driver;
-    }
-
-    /**
-     * Sets the WebDriver instance used for testing.
-     *
-     * @param driver the WebDriver instance used for testing.
-     */
-    private void setDriver(final WebDriver driver) {
+    public void setDriver(final WebDriver driver) {
         this.driver = driver;
     }
 }
