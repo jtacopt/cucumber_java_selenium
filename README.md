@@ -1,9 +1,12 @@
-# Test Report
+# Platforms
 
-Escolha uma das opções abaixo para visualizar o relatório correspondente:
+Choose one of the options below to view information specific to each operating system:
 
-- [**Web**](./web) 🌐: Adicionar `/web` ao URL atual
-- [**Mobile**](./mobile) 📱: Adicionar `/mobile` ao URL atual
-- [**Desktop**](./desktop) 💻: Adicionar `/desktop` ao URL atual
+- [**Windows**](./windows) 💻: Add `/windows` to the current URL
+- [**Linux**](./linux) 🐧: Add `/linux` to the current URL
+- [**Mac**](./mac) 🍏: Add `/mac` to the current URL
+- [**Android**](./android) 📱: Add `/android` to the current URL
+- [**iOS**](./ios) 📱: Add `/ios` to the current URL
 
-Escolha a opção que deseja explorar e acesse o relatório correspondente.
+Select the desired operating system to explore information related to it.
+
