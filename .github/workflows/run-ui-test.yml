@@ -112,7 +112,7 @@ jobs:
       - name: Get Page Artifact
         uses: actions/download-artifact@v3
         with:
-          name: ${{ inputs.platform }}_${{ inputs.os }}_${{ inputs.browser }}_${{ inputs.browser-version }}__allure-report
+          name: ${{ inputs.platform }}_${{ inputs.os }}_${{ inputs.browser }}_${{ inputs.browser-version }}_allure-report
           path: ${{ inputs.platform }}/${{ inputs.os }}/${{ inputs.browser }}/${{ inputs.browser-version }}
 
       - name: Create Branch and Push Results
