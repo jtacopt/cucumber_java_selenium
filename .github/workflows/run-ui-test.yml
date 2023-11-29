@@ -23,6 +23,10 @@ on:
         description: 'Browser'
         type: string
         default: ''
+      browser-version:
+        description: 'Browser version'
+        type: string
+        default: 'latest'
       addtional-path:
         description: 'Additional Path'
         type: string
@@ -47,8 +51,8 @@ jobs:
         uses: actions/upload-artifact@v2
         if: always() && ${{ inputs.include-history }}
         with:
-          name: ${{ inputs.platform }}-${{ inputs.os }}-${{ inputs.browser }}-allure-history
-          path: ${{ inputs.platform }}/${{ inputs.os }}/${{ inputs.browser }}/history
+          name: ${{ inputs.platform }}-${{ inputs.os }}-${{ inputs.browser }}-${{ inputs.browser-version }}-allure-history
+          path: ${{ inputs.platform }}/${{ inputs.os }}/${{ inputs.browser }}/${{ inputs.browser-version }}/history
 
   test:
     name: Test
@@ -76,7 +80,7 @@ jobs:
         if: ${{ inputs.include-history }}
         uses: actions/download-artifact@v3
         with:
-          name: ${{ inputs.platform }}-${{ inputs.os }}-${{ inputs.browser }}-allure-history
+          name: ${{ inputs.platform }}-${{ inputs.os }}-${{ inputs.browser }}-${{ inputs.browser-version }}-allure-history
           path: target/allure-results/history
   
       - name: Generate Report
@@ -91,7 +95,7 @@ jobs:
         uses: actions/upload-artifact@v2
         if: always()
         with:
-         name: ${{ inputs.platform }}_${{ inputs.os }}_${{ inputs.browser }}_allure-report
+         name: ${{ inputs.platform }}_${{ inputs.os }}_${{ inputs.browser }}_${{ inputs.browser-version }}_allure-report
          path: target/site/allure-maven-plugin
 
 
@@ -108,16 +112,16 @@ jobs:
       - name: Get Page Artifact
         uses: actions/download-artifact@v3
         with:
-          name: ${{ inputs.platform }}_${{ inputs.os }}_${{ inputs.browser }}_allure-report
-          path: ${{ inputs.platform }}/${{ inputs.os }}/${{ inputs.browser }}
+          name: ${{ inputs.platform }}_${{ inputs.os }}_${{ inputs.browser }}_${{ inputs.browser-version }}__allure-report
+          path: ${{ inputs.platform }}/${{ inputs.os }}/${{ inputs.browser }}/${{ inputs.browser-version }}
 
       - name: Create Branch and Push Results
         run: |
           git config --local user.email "actions@users.noreply.github.com"
           git config --local user.name "GitHub Actions"
-          branch_name="${{ inputs.platform }}_${{ inputs.os }}_${{ inputs.browser }}"
+          branch_name="${{ inputs.platform }}_${{ inputs.os }}_${{ inputs.browser }}_${{ inputs.browser-version }}"
           git checkout -b "$branch_name"
-          git add ${{ inputs.platform }}/${{ inputs.os }}/${{ inputs.browser }}
+          git add ${{ inputs.platform }}/${{ inputs.os }}/${{ inputs.browser }}/${{ inputs.browser-version }}
           git commit -m "Results for $branch_name"
           git push origin "$branch_name"
           
@@ -151,5 +155,5 @@ jobs:
       - name: Apagar a nova branch
         if: always()
         run: |
-          branch_name="${{ inputs.platform }}_${{ inputs.os }}_${{ inputs.browser }}"
+          branch_name="${{ inputs.platform }}_${{ inputs.os }}_${{ inputs.browser }}_${{ inputs.browser-version }}"
           git push --delete origin "$branch_name"      
