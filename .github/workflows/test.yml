@@ -20,7 +20,7 @@ jobs:
         run: |
           final_value="initial value"
           manual_trigger_value=${{ github.event.inputs.test-type }}
-          if [ -z "$manual_trigger_value" ]; then
+          if [ -n "$manual_trigger_value" ]; then
             final_value="$manual_trigger_value"
           else
             final_value="Trigger By Schedule"
