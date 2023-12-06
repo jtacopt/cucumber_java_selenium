@@ -136,7 +136,7 @@ jobs:
           
             if ! git merge origin/gh_pages; then
               git pull --rebase origin gh_pages
-              sleep 5  # Espera 5 segundos
+              sleep 5 
               git merge origin/gh_pages
             fi
           

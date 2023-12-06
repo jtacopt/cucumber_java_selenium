@@ -11,7 +11,6 @@ import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
-import io.appium.java_client.windows.WindowsDriver;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.openqa.selenium.Capabilities;
@@ -25,18 +24,12 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.security.InvalidParameterException;
-import java.text.MessageFormat;
-import java.util.Optional;
 
 import static org.openqa.selenium.Platform.ANDROID;
 import static org.openqa.selenium.Platform.IOS;
