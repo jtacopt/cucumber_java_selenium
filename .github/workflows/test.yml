@@ -14,7 +14,7 @@ on:
 
 jobs:
   smoke-tests:
-    runs-on: nebula-runners
+    runs-on: ubuntu-latest
     steps:
       - name: Run Smoke Tests
         run: |
