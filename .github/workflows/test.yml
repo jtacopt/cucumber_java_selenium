@@ -26,4 +26,4 @@ jobs:
           else
             final_value="Trigger By Schedule"
           fi
-          echo "Running Smoke Tests on $value"
+          echo "Running Smoke Tests on $final_value"
