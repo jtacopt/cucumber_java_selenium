@@ -20,7 +20,7 @@ jobs:
         run: |
           event_type="${{ github.event_name }}"
           if [ "$event_type" == "workflow_dispatch" ]; then
-            echo "Running Smoke Tests By workflow_dispatch value: ${{ github.event.inputs.test-type }}"
+            echo "Running Smoke Tests By workflow_dispatch value: ${{ github.event.inputs.environment }}"
           elif [ "$event_type" == "schedule" ]; then
             echo "Running Smoke Tests By scheduled event"
           else
