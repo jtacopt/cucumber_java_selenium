@@ -22,7 +22,7 @@ jobs:
           manual_trigger_value=${{ github.event.inputs.test-type }}
           if [ ! -z manual_trigger_value ]
           then
-            final_value="Trigger By Manual
+            final_value="Trigger By Manual"
           else
             final_value="Trigger By Schedule"
           fi
