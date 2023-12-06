@@ -23,7 +23,6 @@ jobs:
             echo "Running Smoke Tests By workflow_dispatch value: ${{ github.event.inputs.test-type }}"
           elif [ "$event_type" == "schedule" ]; then
             echo "Running Smoke Tests By scheduled event"
-          fi
           else
             echo "Unknown trigger type: $event_type"
           fi
