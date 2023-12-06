@@ -16,13 +16,13 @@ jobs:
   smoke-tests:
     runs-on: ubuntu-latest
     steps:
-      - name: Run Smoke Tests
+      - name: Run Smoke Tests (${{ env.ENV }}
         run: |
           event_type="${{ github.event_name }}"
           if [ "$event_type" == "workflow_dispatch" ]; then
-            echo "Running Smoke Tests By workflow_dispatch value: ${{ github.event.inputs.environment }}"
+            echo "ENV=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
           elif [ "$event_type" == "schedule" ]; then
-            echo "Running Smoke Tests By scheduled event"
+            echo "ENV=Default" >> $GITHUB_ENV
           else
             echo "Unknown trigger type: $event_type"
           fi
