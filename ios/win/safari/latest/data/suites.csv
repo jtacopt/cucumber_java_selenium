@@ -1,2 +1,2 @@
 "Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"passed","Wed Dec 06 09:37:05 UTC 2023","Wed Dec 06 09:39:12 UTC 2023","126917","","Verify that the filters in SRP are working properly","","Check class attribute","","Check class attribute",""
+"passed","Wed Dec 06 09:40:22 UTC 2023","Wed Dec 06 09:42:35 UTC 2023","132460","","Verify that the filters in SRP are working properly","","Check class attribute","","Check class attribute",""
