@@ -48,7 +48,7 @@ jobs:
           ref: gh_pages
 
       - name: Upload Report
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: always() && ${{ inputs.include-history }}
         with:
           name: ${{ inputs.platform }}-${{ inputs.os }}-${{ inputs.browser }}-${{ inputs.browser-version }}-allure-history
@@ -92,7 +92,7 @@ jobs:
           mv executors.json target/site/allure-maven-plugin/widgets
 
       - name: Upload Report
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: always()
         with:
          name: ${{ inputs.platform }}_${{ inputs.os }}_${{ inputs.browser }}_${{ inputs.browser-version }}_allure-report
