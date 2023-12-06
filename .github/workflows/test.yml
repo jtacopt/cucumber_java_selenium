@@ -16,7 +16,7 @@ jobs:
   smoke-tests:
     runs-on: ubuntu-latest
     steps:
-      - name: Run Smoke Tests (${{ env.ENV }}
+      - name: Run Smoke Tests (${{ inputs.environment }}}
         run: |
           event_type="${{ github.event_name }}"
           if [ "$event_type" == "workflow_dispatch" ]; then
