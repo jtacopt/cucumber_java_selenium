@@ -18,11 +18,13 @@ jobs:
     steps:
       - name: Run Smoke Tests
         run: |
-          final_value="initial value"
-          manual_trigger_value=${{ github.event.inputs.test-type }}
-          if [ -n "$manual_trigger_value" ]; then
-            final_value="$manual_trigger_value"
-          else
-            final_value="Trigger By Schedule"
+          event_type="${{ github.event_name }}"
+          if [ "$event_type" == "workflow_dispatch" ]; then
+            echo "Running Smoke Tests By workflow_dispatch value: ${{ github.event.inputs.test-type }}"
+          elif [ "$event_type" == "schedule" ]; then
+            echo "Running Smoke Tests By scheduled event"
           fi
-          echo "Running Smoke Tests on $final_value"
+          else
+            echo "Unknown trigger type: $event_type"
+          fi
+        
