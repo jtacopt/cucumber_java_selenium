@@ -78,7 +78,7 @@ jobs:
 
       - name: Add history
         if: ${{ inputs.include-history }}
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: ${{ inputs.platform }}-${{ inputs.os }}-${{ inputs.browser }}-${{ inputs.browser-version }}-allure-history
           path: target/allure-results/history
@@ -110,7 +110,7 @@ jobs:
           ref: gh_pages
 
       - name: Get Page Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: ${{ inputs.platform }}_${{ inputs.os }}_${{ inputs.browser }}_${{ inputs.browser-version }}_allure-report
           path: ${{ inputs.platform }}/${{ inputs.os }}/${{ inputs.browser }}/${{ inputs.browser-version }}
